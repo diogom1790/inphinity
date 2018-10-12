@@ -1,0 +1,43 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Wed Sep 27 15:32:12 2017
+
+@author: Diogo Leite
+"""
+
+from DAL import *
+from configuration.configuration_data import *
+
+class _Source_sql_new(object):
+    """
+    This class manipulate the DOMAINS table in the database
+
+    Theses ones correspond to the persons that give us the data
+
+    The FK are manipulated in the lasts positions of the parameters
+    """
+    def __init__(self):
+        self.db_name = self.get_database_name()
+
+    def get_database_name(self):
+        """
+        This method is used to get the database name used in factory
+
+        :return: database name
+        :rtype string
+        """
+        conf_data_obj = Configuration_data('INPHINITY')
+        db_name = conf_data_obj.get_database_name()
+        return db_name
+        
+    def select_all_sources_all_attributes(self):
+        """
+        return all the SOURCES in the database
+
+        :return: cursor with all source
+        :rtype Cursor list
+        """
+        sql_string = "SELECT * FROM SOURCES"
+        dalObj = DAL(self.db_name, sql_string)
+        results = dalObj.executeSelect()
+        return results

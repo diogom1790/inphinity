@@ -1,0 +1,109 @@
+CREATE TABLE PROTEINS(
+	id_protein_PT INT NOT NULL AUTO_INCREMENT, 
+	designation_PT TEXT NOT NULL, 
+	sequence_PT TEXT NOT NULL, 
+	DNA_sequence_PT TEXT, 
+	PRIMARY KEY(id_protein_PT)
+	);
+	
+	
+CREATE TABLE SOURCES(
+	id_source_SO INT NOT NULL AUTO_INCREMENT,
+	designation_SO TEXT NOT NULL,
+	PRIMARY KEY(id_source_SO)
+	);
+	
+CREATE TABLE FAMILIES(
+	id_family_FA INT NOT NULL AUTO_INCREMENT,
+	designation_FA TEXT NOT NULL,
+	PRIMARY KEY(id_family_FA)
+	);
+	
+CREATE TABLE GENUSES(
+	id_genus_GE INT NOT NULL AUTO_INCREMENT,
+	FK_id_family_FA_GE INT NOT NULL,
+	designation_GE TEXT NOT NULL,
+	PRIMARY KEY(id_genus_GE),
+	FOREIGN KEY (FK_id_family_FA_GE) REFERENCES FAMILIES(id_family_FA)
+	);
+	
+	
+CREATE TABLE SPECIES(
+	id_specie_SP INT NOT NULL AUTO_INCREMENT,
+	FK_id_genus_GE_SP INT NOT NULL,
+	designation_SP TEXT NOT NULL,
+	PRIMARY KEY(id_specie_SP),
+	FOREIGN KEY (FK_id_genus_GE_SP) REFERENCES GENUSES(id_genus_GE)
+	);
+	
+	
+CREATE TABLE STRAINS(
+	id_strain_ST INT NOT NULL AUTO_INCREMENT,
+	FK_id_specie_SP_ST INT NOT NULL,
+	designation_ST TEXT NOT NULL,
+	PRIMARY KEY(id_strain_ST),
+	FOREIGN KEY (FK_id_specie_SP_ST) REFERENCES SPECIES(id_specie_SP)
+	);
+	
+CREATE TABLE TYPE_ORGANISM(
+	id_type_TO INT NOT NULL AUTO_INCREMENT,
+	designation_TO TEXT NOT NULL,
+	PRIMARY KEY (id_type_TO)
+	);
+	
+CREATE TABLE WHOLE_DNA(
+	id_dna_WD INT NOT NULL,
+	head_WD TEXT NOT NULL,
+	sequence_WD LONGTEXT NOT NULL,
+	PRIMARY KEY (id_dna_WD)
+	);
+	
+	
+CREATE TABLE ORGANISMS(
+	id_organism_OR INT NOT NULL AUTO_INCREMENT,
+	FK_id_source_SO_OR INT NOT NULL,
+	FK_id_strain_ST_OR INT NOT NULL,
+	FK_id_type_TY_OR INT NOT NULL,
+	FK_id_whole_DNA_DNA_OR INT NOT NULL,
+	gi_OR TINYTEXT NOT NULL,
+	acc_num_OR TINYTEXT NOT NULL,
+	qty_proteins_OR INT NOT NULL,
+	assembled_OR INT NOT NULL,
+	qty_contigue INT NOT NULL,
+	PRIMARY KEY (id_organism_OR),
+	FOREIGN KEY (FK_id_source_SO_OR) REFERENCES SOURCES(id_source_SO),
+	FOREIGN KEY (FK_id_strain_ST_OR) REFERENCES STRAINS(id_strain_ST),
+	FOREIGN KEY (FK_id_type_TY_OR) REFERENCES TYPE_ORGANISM(id_type_TO),
+	FOREIGN KEY (FK_id_whole_DNA_DNA_OR) REFERENCES WHOLE_DNA(id_dna_WD)
+	);
+	
+CREATE TABLE GENE(
+	id_gene_GE INT NOT NULL AUTO_INCREMENT,
+	FK_id_organism_OR_GE INT NOT NULL,
+	FK_id_protein_PT_GE INT NOT NULL,
+	dna_head_GE TEXT NOT NULL,
+	dna_sequence_GE MEDIUMTEXT,
+	start_position_GE INT,
+	end_position_GE INT,
+	PRIMARY KEY (id_gene_GE),
+	FOREIGN KEY (FK_id_organism_OR_GE) REFERENCES ORGANISMS(id_organism_OR),
+	FOREIGN KEY (FK_id_protein_PT_GE) REFERENCES PROTEINS(id_protein_PT)
+	);
+	
+CREATE TABLE INTERACTIONS_TYPES(
+	id_type_inter_IT INT NOT NULL AUTO_INCREMENT,
+	designation_IT TEXT NOT NULL,
+	PRIMARY KEY (id_type_inter_IT)
+	);
+	
+CREATE TABLE COUPLE(
+	id_couple_CP INT NOT NULL AUTO_INCREMENT,
+	FK_id_organism_bact_OR_CP INT NOT NULL,
+	FK_id_organism_phage_OR_CP INT NOT NULL,
+	FK_id_type_inter_IT_CP INT NOT NULL,
+	interaction_CP BOOLEAN NOT NULL,
+	PRIMARY KEY (id_couple_CP),
+	FOREIGN KEY (FK_id_organism_bact_OR_CP) REFERENCES ORGANISMS(id_organism_OR),
+	FOREIGN KEY (FK_id_organism_phage_OR_CP) REFERENCES ORGANISMS(id_organism_OR),
+	FOREIGN KEY (FK_id_type_inter_IT_CP) REFERENCES INTERACTIONS_TYPES(id_type_inter_IT)
+	);
