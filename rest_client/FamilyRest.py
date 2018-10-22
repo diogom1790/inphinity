@@ -6,7 +6,7 @@ class FamilyAPI(object):
 
     def __init__(self, function='family/'):
         self.function = function
-    
+        
 
     def get_all(self):
         result_get = GetRest(function = self.function).performRequest()

@@ -2,6 +2,10 @@ from configuration.configuration_api import ConfigurationAPI
 from rest_client.AuthenticationRest import AuthenticationAPI
 import requests
 from rest_client.FamilyRest import FamilyAPI
+from objects_API.FamilyJ import FamilyJson
+
+
+
 
 conf_obj = ConfigurationAPI()
 conf_obj.load_data_from_ini()
@@ -15,9 +19,9 @@ AuthenticationAPI().createAutenthicationToken()
 #r = requests.get(url, headers=headers)
 #print(r)
 
-aaa = FamilyAPI().get_all()
-print(aaa)
-print('Hello')
+aaa = FamilyJson().getAllAPI()
+print(aaa[2])
+print('asdasd')
 #from objects_new.Families_new import Family
 #from serializers.Families_ser import FamilySchema
 
