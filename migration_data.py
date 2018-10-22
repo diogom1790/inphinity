@@ -1,15 +1,23 @@
 from configuration.configuration_api import ConfigurationAPI
+from rest_client.AuthenticationRest import AuthenticationAPI
 import requests
+from rest_client.FamilyRest import FamilyAPI
 
 conf_obj = ConfigurationAPI()
-conf_obj.create_new_token()
-print('aaaaa')
+conf_obj.load_data_from_ini()
+AuthenticationAPI().createAutenthicationToken()
 
-headers = {'Content-Type': 'application/json',
-           'Authorization': 'Bearer ' + conf_obj.token}
-url = 'http://trex.lan.iict.ch:8080/api/family/'
-r = requests.get(url, headers=headers)
-print(r)
+#print('aaaaa')
+
+#headers = {'Content-Type': 'application/json',
+#           'Authorization': 'Bearer ' + conf_obj.token}
+#url = 'http://trex.lan.iict.ch:8080/api/family/'
+#r = requests.get(url, headers=headers)
+#print(r)
+
+aaa = FamilyAPI().get_all()
+print(aaa)
+print('Hello')
 #from objects_new.Families_new import Family
 #from serializers.Families_ser import FamilySchema
 

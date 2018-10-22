@@ -7,12 +7,11 @@ Created on Wen Oct 17 08:26:09 2018
 
 import configparser
 from pathlib import Path
-from rest_client.authentication_rest import AuthenticationAPI
-from rest_client.login_json import LoginJson
 import os
 import getpass
 import sys
 import configparser
+from rest_client.AuthenticationRest import AuthenticationAPI
 
 
 class ConfigurationAPI:
@@ -63,29 +62,53 @@ class ConfigurationAPI:
         config['api_rest']['endpoint'] = self.endpoint 
         config['api_rest']['username'] = self.username
         config['api_rest']['password'] = self.password
+        self.saveEnvirVariables()
 
         with open("configuration/configuration_api.ini", 'w') as f:
             config.write(f)
 
-    def create_new_token(self):
+
+    def load_data_from_ini(self):
         config = self.check_config_file_API()
         if config != None:
             self.endpoint = config['api_rest']['endpoint']
             self.username = config['api_rest']['username']
             self.password = config['api_rest']['password']
+            self.token = config['api_rest']['token']
+            self.saveEnvirVariables()
+
+    def get_endpoint(self):
+        config = self.check_config_file_API()
+        if config != None:
+            self.endpoint = config['api_rest']['endpoint']
+            return self.endpoint
+
+    def create_new_token(self):
+        config = self.check_config_file_API()
+        if config != None:
+            self.load_data_from_ini()
         else:
             self.get_informations()
             self.create_ini_api_data()
         authentication_obj = AuthenticationAPI(username = self.username, password=self.password, endpoint=self.endpoint)
-        json_response = authentication_obj.validationAuthentication()
-        loginSjonObj = LoginJson(jsonValue = json_response)
-        if loginSjonObj.lodingData != None:
-            self.token = loginSjonObj.jsonData['token']
-
-    def get_token(self):
-        if len(self.token) == 0:
-            create_new_token()
+        token = authentication_obj.createAutenthicationToken()
+        if token != None:
+            os.environ["token_api"] = token
+            self.token = token
+    
+    def getTokenFromIni(self):
+        config = self.check_config_file_API()
+        if config != None:
+            self.token = config['api_rest']['token']
+        else:
+            self.create_new_token()
         return self.token
+
+    def saveEnvirVariables(self):
+        os.environ["token_api"] = self.token
+        os.environ["endpoint_api"] = self.endpoint
+        os.environ["username_api"] = self.username
+        os.environ["password_api"] = self.password
 
     #def confirm_validity_token(self):
     #    if self.token != "":
