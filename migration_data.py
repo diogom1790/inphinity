@@ -6,7 +6,7 @@ conf_obj.create_new_token()
 print('aaaaa')
 
 headers = {'Content-Type': 'application/json',
-           'Authorization': 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoyLCJ1c2VybmFtZSI6ImRpb2dvX3Rlc3QiLCJleHAiOjE1Mzk3OTE4NDAsImVtYWlsIjoiZGlvZ28xNzkwQGhvdG1haWwuY29tIn0.Eb4H9Ux3ZnYeEm8dB835Lh_codS72R1ATiHdkHtdbr8a'}
+           'Authorization': 'Bearer ' + conf_obj.token}
 url = 'http://trex.lan.iict.ch:8080/api/family/'
 r = requests.get(url, headers=headers)
 print(r)

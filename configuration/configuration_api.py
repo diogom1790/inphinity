@@ -57,10 +57,10 @@ class ConfigurationAPI:
         config.read(complete_path + '/configuration_api.ini')
         return config
 
-    def create_ini_api_data(self, json_login_data):
+    def create_ini_api_data(self):
         config = configparser.ConfigParser()
         config.add_section('api_rest')
-        config['api_rest']['endpoint'] = self.endpoint
+        config['api_rest']['endpoint'] = self.endpoint 
         config['api_rest']['username'] = self.username
         config['api_rest']['password'] = self.password
 
@@ -81,6 +81,11 @@ class ConfigurationAPI:
         loginSjonObj = LoginJson(jsonValue = json_response)
         if loginSjonObj.lodingData != None:
             self.token = loginSjonObj.jsonData['token']
+
+    def get_token(self):
+        if len(self.token) == 0:
+            create_new_token()
+        return self.token
 
     #def confirm_validity_token(self):
     #    if self.token != "":
