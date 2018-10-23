@@ -124,3 +124,20 @@ class _Strain_sql_new(object):
         results = dalObj.executeDelete()
         return results.rowcount
 
+
+    def select_all_strain_of_specie_id(self, id_specie):
+        """
+        return all the Strain in the database based on a genus id
+
+        :param id_specie: id of the specie  - -1 if unknown
+
+        :type id_specie: int - not required 
+
+        :return: cursor with all strains
+        :rtype Cursor list
+        """
+        sql_string = "SELECT id_strain_st, designation_st, fk_id_specie_sp_st FROM STRAINS WHERE fk_id_specie_sp_st = " + str(id_specie)
+        dalObj = DAL(self.db_name, sql_string)
+        results = dalObj.executeSelect()
+        return results
+

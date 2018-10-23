@@ -101,6 +101,24 @@ class Strain(object):
         id_couple = sqlObj.remove_strain_by_id(id_strain)
         return id_couple
 
+    def get_strains_by_specie_id(id_specie):
+        """
+        Get a list of strains of a given specie id
+
+        :param id_specie: id of the Specie that we want the strain
+
+        :type id_spece: int - required 
+  
+        :return: array of strains
+        :rtype: array(Strains)
+        """
+        listOfStrains = []
+        sqlObj = _Strain_sql_new()
+        results = sqlObj.select_all_strain_of_specie_id(id_specie)
+        for element in results:
+            listOfStrains.append(Strain(element[0], element[1], element[2]))
+        return listOfStrains
+
 
     def __str__(self):
         """
