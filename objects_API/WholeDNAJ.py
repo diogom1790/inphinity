@@ -76,8 +76,8 @@ class WholeDNAJson(object):
         """
 
         schema = WholeDNASchema(only=['id_db_online','sequence_DNA','fasta_head','organism'])
-        jsonFam = schema.dump(self)
-        resultsCreation = WholeDNAAPI().set_wholeDNA(jsonData = jsonFam.data)
+        jsonWholeDNA = schema.dump(self)
+        resultsCreation = WholeDNAAPI().set_wholeDNA(jsonData = jsonWholeDNA.data)
         schema = WholeDNASchema()
         results = schema.load(resultsCreation)
         return results[0]
