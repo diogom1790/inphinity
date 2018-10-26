@@ -23,7 +23,7 @@ class WholeDNAAPI(object):
 
     def get_all(self):
         """
-        get all the WHoleDNAs on the database
+        get all the WholeDNAs on the database
 
         :return: json file with all the data
         :rtype: string (json format)
