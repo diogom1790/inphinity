@@ -13,7 +13,7 @@ class ContigSchema(Schema):
     sequence_DNA = fields.Str()
     fasta_head = fields.Str()
     organism = fields.Int()
-    protein_contig = fields.List(fields.Int)
+    protein_contig = fields.List(fields.Url)
 
     @post_load
     def make_Contig(self, data):
