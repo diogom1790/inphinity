@@ -12,7 +12,7 @@ class Organism(object):
     This class treat the Organism object has it exists in Organism table database
     By default, all FK are in the lasts positions in the parameters declaration
     """
-    def __init__(self, gi, acc_num, qty_proteins, assembled, qty_contig, id_organism = None, fk_source = None, fk_strain = None, fk_type = None, fk_whole_genome = None, fk_source_data = None):
+    def __init__(self, gi, acc_num, qty_proteins = None, assembled = None, qty_contig = None, id_organism = None, fk_source = None, fk_strain = None, fk_type = None, fk_whole_genome = None, fk_source_data = None):
         """
         Constructor of the Organism object. All the parameters have a default value
 
