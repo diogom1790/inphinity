@@ -12,9 +12,9 @@ class Gene(object):
     This class treat the genes object has it exists in GENES table database
     By default, all FK are in the lasts positions in the parameters declaration
     """
-    def __init__(self, id_gene = -1, gene_number = -1, dna_head = "No head", 
-                 dna_sequence = "No sequence", start_position = -1, 
-                 end_position = -1, FK_id_organism = -1, FK_id_protein = -1):
+    def __init__(self, id_gene = None, gene_number = None, dna_head = None, 
+                 dna_sequence = None, start_position = None, 
+                 end_position = None, FK_id_organism = None, FK_id_protein = None):
         """
         Constructor of the Gene object. All the parameters have a default value
 

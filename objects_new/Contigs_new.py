@@ -12,7 +12,7 @@ class Contig(object):
     This class treat the Contigs object has it exists in Contig table database
     By default, all FK are in the lasts positions in the parameters declaration
     """
-    def __init__(self, id_contig = -1, id_contig_db_outside = -1, head = "", sequence = " ", fk_id_whole_genome = -1):
+    def __init__(self, id_contig = None, id_contig_db_outside = None, head = None, sequence = None, fk_id_whole_genome = None):
         """
         Constructor of the Contig object. All the parameters have a default value
 

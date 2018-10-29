@@ -12,7 +12,7 @@ class WholeDNA(object):
     This class treat the Whole DNA (called Whole Genome) object has it exists in WholeDNA table database
     By default, all FK are in the lasts positions in the parameters declaration
     """
-    def __init__(self, id_wholeDNA = -1, head = "", head_id = "", sequence = ""):
+    def __init__(self, id_wholeDNA = None, head = None, head_id = None, sequence = None):
         """
         Constructor of the Organism object. All the parameters have a default value
 
