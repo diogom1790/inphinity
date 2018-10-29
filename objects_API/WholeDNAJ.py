@@ -52,7 +52,7 @@ class WholeDNAJson(object):
         override the Str function 
 
         """
-        return 'id: {0} fasta head {2}'.format(self.id, self.fasta_head)
+        return 'id: {0} fasta head {1}'.format(self.id, self.fasta_head)
 
     def getAllAPI():
 
