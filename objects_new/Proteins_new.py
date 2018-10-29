@@ -13,7 +13,7 @@ class Protein(object):
     This class treat the Protein object has it exists in PROTDOM table database
     By default, all FK are in the lasts positions in the parameters declaration
     """
-    def __init__(self, id_protein = -1, id_accession = "", designation = "", sequence_prot = "", sequence_dna = "", start_point = -1, end_point = -1, start_point_cnt = -1, end_point_cnt = -1, fk_id_contig= -1):
+    def __init__(self, id_protein = None, id_accession = None, designation = None, sequence_prot = None, sequence_dna = None, start_point = None, end_point = None, start_point_cnt = None, end_point_cnt = None, fk_id_contig= None):
         """
         Constructor of the Protein object. All the parameters have a default value
 
