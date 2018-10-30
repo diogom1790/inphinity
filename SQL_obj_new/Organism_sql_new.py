@@ -365,7 +365,7 @@ class _Organisms_sql_new(object):
         :return: cursor with all Organisms
         :rtype Cursor list
         """
-        sql_string = "SELECT id_organism_OR, gi_OR, acc_num_OR, qty_proteins_OR, assembled_OR, qty_contigue, FK_id_source_SO_OR, FK_id_strain_ST_OR, FK_id_type_TY_OR, FK_id_whole_DNA_DNA_OR from STRAINS, SPECIES, ORGANISMS WHERE FK_id_specie_SP_ST = id_specie_SP and FK_id_strain_ST_OR = id_strain_ST and FK_id_type_TY_OR = 1 and id_specie_SP = " + str(fk_id_specie)
+        sql_string = "SELECT id_organism_OR, gi_OR, acc_num_OR, qty_proteins_OR, assembled_OR, qty_contigue, FK_id_source_SO_OR, FK_id_strain_ST_OR, FK_id_type_TY_OR, FK_id_whole_DNA_DNA_OR, fk_id_source_data_sd_or from STRAINS, SPECIES, ORGANISMS WHERE FK_id_specie_SP_ST = id_specie_SP and FK_id_strain_ST_OR = id_strain_ST and FK_id_type_TY_OR = 1 and id_specie_SP = " + str(fk_id_specie)
         dalobj = DAL(self.db_name, sql_string)
         results = dalobj.executeSelect()
         return results
@@ -381,10 +381,11 @@ class _Organisms_sql_new(object):
         :return: cursor with all Organisms
         :rtype Cursor list
         """
-        sql_string = "SELECT id_organism_OR, gi_OR, acc_num_OR, qty_proteins_OR, assembled_OR, qty_contigue, FK_id_source_SO_OR, FK_id_strain_ST_OR, FK_id_type_TY_OR, FK_id_whole_DNA_DNA_OR from STRAINS, SPECIES, ORGANISMS WHERE id_train_TP = " + str(fk_id_strain)
+        sql_string = "SELECT id_organism_OR, gi_OR, acc_num_OR, qty_proteins_OR, assembled_OR, qty_contigue, FK_id_source_SO_OR, FK_id_strain_ST_OR, FK_id_type_TY_OR, FK_id_whole_DNA_DNA_OR, fk_id_source_data_sd_or from ORGANISMS WHERE fk_id_strain_st_or = " + str(fk_id_strain)
         dalobj = DAL(self.db_name, sql_string)
         results = dalobj.executeSelect()
         return results
+
 
     def remove_organism_by_id(self, id_organism):
         """

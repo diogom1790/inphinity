@@ -12,7 +12,8 @@ class Organism(object):
     This class treat the Organism object has it exists in Organism table database
     By default, all FK are in the lasts positions in the parameters declaration
     """
-    def __init__(self, gi, acc_num, qty_proteins = None, assembled = None, qty_contig = None, id_organism = None, fk_source = None, fk_strain = None, fk_type = None, fk_whole_genome = None, fk_source_data = None):
+    def __init__(self, id_organism, gi, acc_num, qty_proteins = None, assembled = None, qty_contig = None,  fk_source = None, fk_strain = None, fk_type = None, fk_whole_genome = None, fk_source_data = None):
+
         """
         Constructor of the Organism object. All the parameters have a default value
 
@@ -286,6 +287,8 @@ class Organism(object):
             listOfOrganisms.append(Organism(element[0], element[1], element[2], element[3], element[4], element[5], element[6], element[7], element[8], element[9]))
         return listOfOrganisms
 
+
+
     def get_all_bacteria_by_id_specie(fk_id_specie):
         """
         get all bacterium with a strain.
@@ -321,9 +324,9 @@ class Organism(object):
 
         listOfOrganisms = []
         sqlObj = _Organisms_sql_new()
-        results = sqlObj.select_all_organisms_all_attributes_by_specie(fk_id_specie)
+        results = sqlObj.select_all_organisms_all_attributes_by_strain(fk_id_strain)
         for element in results:
-            listOfOrganisms.append(Organism(element[0], element[1], element[2], element[3], element[4], element[5], element[6], element[7], element[8], element[9]))
+            listOfOrganisms.append(Organism(element[0], element[1], element[2], element[3], element[4], element[5], element[6], element[7], element[8], element[9], element[10]))
         return listOfOrganisms
 
     def remove_organism_by_id(id_organism):
