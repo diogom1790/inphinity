@@ -370,6 +370,22 @@ class _Organisms_sql_new(object):
         results = dalobj.executeSelect()
         return results
 
+    def select_all_organisms_all_attributes_by_strain(self, fk_id_strain):
+        """
+        Consult the DB and return a list with all Organisms the fk strain given
+
+        :param fk_id_strain: FK id strain of the organisms
+
+        :type fk_id_strain: int - required 
+
+        :return: cursor with all Organisms
+        :rtype Cursor list
+        """
+        sql_string = "SELECT id_organism_OR, gi_OR, acc_num_OR, qty_proteins_OR, assembled_OR, qty_contigue, FK_id_source_SO_OR, FK_id_strain_ST_OR, FK_id_type_TY_OR, FK_id_whole_DNA_DNA_OR from STRAINS, SPECIES, ORGANISMS WHERE id_train_TP = " + str(fk_id_strain)
+        dalobj = DAL(self.db_name, sql_string)
+        results = dalobj.executeSelect()
+        return results
+
     def remove_organism_by_id(self, id_organism):
         """
         remove a whole_dna by its id

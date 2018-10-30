@@ -307,6 +307,25 @@ class Organism(object):
             listOfOrganisms.append(Organism(element[0], element[1], element[2], element[3], element[4], element[5], element[6], element[7], element[8], element[9]))
         return listOfOrganisms
 
+    def get_organism_by_fk_strain(fk_id_strain):
+        """
+        get all organism give the fk of the strain
+  
+        :param fk_id_strain: id of the specie
+        
+        :type fk_id_strain: int - required
+  
+        :return: list of organisms
+        :rtype: int
+        """
+
+        listOfOrganisms = []
+        sqlObj = _Organisms_sql_new()
+        results = sqlObj.select_all_organisms_all_attributes_by_specie(fk_id_specie)
+        for element in results:
+            listOfOrganisms.append(Organism(element[0], element[1], element[2], element[3], element[4], element[5], element[6], element[7], element[8], element[9]))
+        return listOfOrganisms
+
     def remove_organism_by_id(id_organism):
         """
         remove an organism given its id
