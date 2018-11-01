@@ -31,17 +31,6 @@ class _Protein_sql_new(object):
         conf_data_obj = Configuration_data('INPHINITY')
         db_name = conf_data_obj.get_database_name()
         return db_name
-
-    def get_database_name(self):
-        """
-        This method is used to get the database name used in factory
-
-        :return: database name
-        :rtype string
-        """
-        conf_data_obj = Configuration_data('INPHINITY')
-        db_name = conf_data_obj.get_database()
-        return db_name
         
     def select_all_proteins_all_attributes(self):
         """

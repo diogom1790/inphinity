@@ -137,3 +137,27 @@ class _Contig_sql_new(object):
         dalObj.parameters = params
         results = dalObj.executeInsert()
         return results.rowcount
+
+    def select_contig_by_id(self, id_contig):
+        """
+        return all the Contigs in the database
+
+        :param id_contig: id of the contig
+
+        :type id_contig: int - required
+
+        :return: cursor with the contig
+        :rtype Cursor list
+        """
+
+        sql_string = "SELECT id_contig_CT, id_contig_db_outside_CT, head_CT, sequence_CT, FK_id_whole_genome_WD_CT FROM CONTIGS WHERE id_contig_CT = " + str(id_contig)
+        dalObj = DAL(self.db_name, sql_string)
+        results = dalObj.executeSelect()
+        return results
+
+
+    def get_contig_by_organism_id(self, id_organism):
+        sql_string = "SELECT id_contig_CT, id_contig_db_outside_CT, head_CT, sequence_CT, FK_id_whole_genome_WD_CT FROM CONTIGS, ORGANISMS, WHOLE_DNA WHERE id_organism_OR = " + str(id_organism) + " and fk_id_whole_dna_dna_or = id_dna_wd and fk_id_whole_genome_wd_ct = id_dna_wd"
+        dalObj = DAL(self.db_name, sql_string)
+        results = dalObj.executeSelect()
+        return results
