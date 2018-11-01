@@ -18,6 +18,10 @@ class GeneSchema(Schema):
     organism = fields.Int()
     protein_gene = fields.List(fields.Url)
 
+    contig_gene = fields.Int(allow_none = True)
+    position_start_contig = fields.Int(allow_none = True)
+    position_end_contig = fields.Int(allow_none = True)
+
     @post_load
     def make_GeneDNA(self, data):
         return GeneJson(**data)
@@ -27,7 +31,7 @@ class GeneJson(object):
     This class manage the object and is used to map them into json format
     """
 
-    def __init__(self, id = None, id_db_online = None, sequence_DNA= None, fasta_head = None, position_start = None, position_end = None, number_of_seq=None, organism= None, protein_gene = None):
+    def __init__(self, id = None, id_db_online = None, sequence_DNA= None, fasta_head = None, position_start = None, position_end = None, number_of_seq=None, organism= None, protein_gene = None, position_start_contig = None, position_end_contig = None, contig = None):
         """
         Initialization of the class
 
@@ -40,6 +44,9 @@ class GeneJson(object):
         :param number_of_seq: Number of the sequenced gene (first, second,...)
         :param organism: id of the organism
         :param protein_gene: List of the proteins in this gene
+        :param contig: contig of the gene
+        :param position_start_contig: Start position of the gene on the contig
+        :param position_end_contig: End position of the gene on the contig
 
         :type id: int
         :type id_db_online: string 
@@ -50,6 +57,9 @@ class GeneJson(object):
         :type number_of_seq: int
         :type organism: int
         :type protein_gene: Array[URL]
+        :type contig: int
+        :type position_start_contig: int
+        :type position_end_contig: int
 
 
         """
@@ -61,6 +71,9 @@ class GeneJson(object):
         self.position_end = position_end
         self.number_of_seq = number_of_seq
         self.organism = organism
+        self.contig = contig
+        self.position_start_contig = position_start_contig
+        self.position_end_contig = position_end_contig
 
     def __str__(self):
         """
@@ -90,7 +103,7 @@ class GeneJson(object):
         :rtype: GeneJson
         """
 
-        schema = GeneSchema(only=['id_db_online','sequence_DNA','fasta_head','position_start','position_end','organism'])
+        schema = GeneSchema(only=['id_db_online','sequence_DNA','fasta_head','position_start','position_end','organism','contig','position_start_contig','position_end_contig'])
         jsonGene = schema.dump(self)
         resultsCreation = GeneAPI().set_gene(jsonData = jsonGene.data)
         schema = GeneSchema()

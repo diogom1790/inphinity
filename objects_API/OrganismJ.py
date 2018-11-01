@@ -11,7 +11,7 @@ class OrganismSchema(Schema):
     """
     #id = fields.Int()
     acc_number = fields.Str()
-    gi_number = fields.Str()
+    gi_number = fields.Str(required=False, allow_none=True)
     source_data = fields.Int()
     person_responsible = fields.Int()
     organism_gene = fields.List(fields.Url())

@@ -17,6 +17,7 @@ class BacteriumSchema(OrganismSchema):
 
     @post_load
     def make_Bacterium(self, data):
+
         return BacteriumJson(**data)
 
 class BacteriumJson(object):
