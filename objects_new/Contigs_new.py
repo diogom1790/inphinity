@@ -45,7 +45,7 @@ class Contig(object):
         :rtype: int
         """
         value_contig = None
-        sqlObj = _Contig_sql_new(db_name = 'INPH_proj_out')
+        sqlObj = _Contig_sql_new()
         value_contig = sqlObj.insert_contig_if_not_exist(self.id_contig_db_outside, self.head, self.sequence, self.fk_id_whole_genome)
         self.id_contig = value_contig
         return value_contig
@@ -60,12 +60,12 @@ class Contig(object):
         :rtype: int
         """
         value_contig = None
-        sqlObj = _Contig_sql_new(db_name = 'INPH_proj_out')
+        sqlObj = _Contig_sql_new()
         value_contig = sqlObj.insert_contig(self.id_contig_db_outside, self.head, self.sequence, self.fk_id_whole_genome)
         self.id_contig = value_contig
         return value_contig
 
-    def get_all_Contigs_bi_whole_DNA_id(fk_whole_dna):
+    def get_all_Contigs_by_whole_DNA_id(fk_whole_dna):
         """
         Return all contig based on the fk_id_whole_genome in the database
 
@@ -73,11 +73,43 @@ class Contig(object):
         :rtype: array(Contig)
         """
         listOfOrganisms = []
-        sqlObj = _Contig_sql_new(db_name = 'INPH_proj_out')
+        sqlObj = _Contig_sql_new()
         results = sqlObj.select_all_contigs_all_attributesby_fk_whole_dna(fk_whole_dna)
         for element in results:
             listOfOrganisms.append(Contig(element[0], element[1], element[2], element[3], element[4]))
         return listOfOrganisms
+
+    def get_all_Contigs_by_organism_id(id_organism):
+        """
+        Return all contig based on the id_organism in the database
+
+        :return: array of Contig
+        :rtype: array(Contig)
+        """
+        listOfOrganisms = []
+        sqlObj = _Contig_sql_new()
+        results = sqlObj.get_contig_by_organism_id(id_organism)
+        for element in results:
+            listOfOrganisms.append(Contig(element[0], element[1], element[2], element[3], element[4]))
+        return listOfOrganisms
+
+
+    def get_contig_by_id(idContig):
+        """
+        return a contig given its ID
+
+        :param idContig: id of the contig
+
+        :type idContig: int - required 
+
+        :return:  Contig
+        :rtype: Contig
+        """
+
+        sqlObj = _Contig_sql_new()
+        results = sqlObj.select_contig_by_id(idContig)
+        contig_obj = Contig(results[0][0], results[0][1], results[0][2], results[0][3], results[0][4])
+        return contig_obj
 
     def remove_contig_by_FK_whole_dna(fk_whole_dna):
         """
@@ -90,7 +122,7 @@ class Contig(object):
         :return: couple it removed
         :rtype: int
         """
-        sqlObj = _Contig_sql_new(db_name = 'INPH_proj_out')
+        sqlObj = _Contig_sql_new()
         id_couple = sqlObj.remove_contig_by_fk_whole_dna(fk_whole_dna)
         return id_couple
 
