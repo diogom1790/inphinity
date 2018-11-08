@@ -1,4 +1,8 @@
 #docs to ignore
+/RAST/Contig/*
+/RAST/Fasta/*
+/RAST/Fasta_AA/*
+/RAST/Xls/*
 /configuration/*.ini
 ### Python ###
 # Byte-compiled / optimized / DLL files
