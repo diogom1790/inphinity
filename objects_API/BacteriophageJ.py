@@ -12,7 +12,8 @@ class BacteriophageSchema(OrganismSchema):
     
     #organism = fields.Nested('OrganismSchema', many = False, required = True)
     id = fields.Int()
-    baltimore_classification = fields.Int()
+    baltimore_classification = fields.Int(required=False, allow_none=True)
+    designation = fields.String()
 
 
     @post_load
@@ -24,7 +25,7 @@ class BacteriophageJson(object):
     This class manage the object and is used to map them into json format
     """
 
-    def __init__(self, id = None, acc_number = None, gi_number= None, person_responsible = None, source_data = None, organism_gene = None, organism_contig = None, organism_wholeDNA = None, protein_organism = None, baltimore_classification = None):
+    def __init__(self, id = None, acc_number = None, gi_number= None, person_responsible = None, source_data = None, organism_gene = None, organism_contig = None, organism_wholeDNA = None, protein_organism = None, baltimore_classification = None, designation = None):
         """
         Initialization of the class
 
@@ -38,6 +39,7 @@ class BacteriophageJson(object):
         OrganismJson.__init__(self,acc_number, gi_number, source_data, person_responsible, organism_gene, organism_contig, organism_wholeDNA, protein_organism)
         self.id = id
         self.baltimore_classification = baltimore_classification
+        self.designation = designation
 
     def __str__(self):
         """
@@ -68,7 +70,7 @@ class BacteriophageJson(object):
 
         """
 
-        schema = BacteriophageSchema(only=['acc_number','gi_number','source_data','person_responsible','baltimore_classification'])
+        schema = BacteriophageSchema(only=['acc_number','gi_number','source_data','person_responsible','baltimore_classification', 'designation'])
         jsonBacteriophage = schema.dump(self)
         resultsCreation = BacteriophageAPI().set_bacteriophage(jsonData = jsonBacteriophage.data)
         schema = BacteriophageSchema()
