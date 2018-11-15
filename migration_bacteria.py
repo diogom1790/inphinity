@@ -228,12 +228,13 @@ def createGeneProt(proteinOBJ, fkOrganism, fkContig = None):
                      dna_sequence = proteinOBJ.sequence_dna, FK_id_organism = fkOrganism, start_position = proteinOBJ.start_point, end_position = proteinOBJ.end_point)    
     geneId = 0
     if fkContig != None:
-        geneId = createGene(geneObjInsert, proteinOBJ.fk_id_contig, proteinOBJ.start_point_cnt, proteinOBJ.end_point_cnt)
+        geneId = createGene(geneObjInsert, proteinOBJ.start_point_cnt, proteinOBJ.end_point_cnt, fkContig)
     else:
         geneId = createGene(geneObjInsert, None, None, None)
     proteinOBJInsert = Protein(id_accession = proteinOBJ.id_accession, sequence_prot = proteinOBJ.sequence_prot, designation = proteinOBJ.designation)
 
-    proteinId = createProtein(proteinOBJInsert, fkOrganism, geneId)
+    if (proteinOBJ.sequence_prot != None):
+        proteinId = createProtein(proteinOBJInsert, fkOrganism, geneId)
     
 def createContigNew(contigObj, bacteriumId):
     head_cnt = ''
@@ -245,6 +246,8 @@ def createContigNew(contigObj, bacteriumId):
     contigObj = Contig(id_contig_db_outside = contigObj.id_contig_db_outside, head = head_cnt, sequence = contigObj.sequence)
     idContig = createContig(contigObj, bacteriumId)
     return idContig
+
+
 
 def insertBacteriumProteinsWholeDNA(bacteriumObj, idStrainAPI, listProteins, wholeDNA):
     """
@@ -267,6 +270,7 @@ def insertBacteriumProteinsWholeDNA(bacteriumObj, idStrainAPI, listProteins, who
     """
     bacteriumCreatedID = createBacterium(bacteriumObj, idStrainAPI)
     wholeDNACreatedID = createWholeDNA(wholeDNA, bacteriumCreatedID)
+
     for protein in listProteins:
         createGeneProt(protein, bacteriumCreatedID)
 
@@ -315,6 +319,7 @@ def load_get_bacterium(pathFile, arrayStates):
     :rtype panda dataframe
 
     """
+    arrayProblems = [15104, 15123, 15334, 15336, 15342, 15363, 15373, 15374, 15415, 15416, 15417, 15418, 15419, 15420]
     wholeDNA = None
     dataframe = pd.read_csv(pathFile)
     for index, row in dataframe.iterrows():
@@ -322,7 +327,7 @@ def load_get_bacterium(pathFile, arrayStates):
             row_verification = [[row['strain_db'], row['strain_api'],2]]
 
             id_strain_API = row['strain_api']
-            if id_strain_API not in arrayStates[:, 1]:
+            if id_strain_API not in arrayStates[:, 1] and id_strain_API not in arrayProblems:
                 arrayStates = np.append(arrayStates, row_verification, axis=0)
                 writeCSVStateInsertion(arrayStates)
 
@@ -606,7 +611,7 @@ AuthenticationAPI().createAutenthicationToken()
 #print(personResponsibleList)
 
 
-#personResponsibleObj = Source(designation='Grégory Resch')
+#personResponsibleObj = Source(designation='Gregory Resch')
 #print(personResponsibleObj)
 
 #personRespoNew = creatPersonResponsible(personResponsibleObj)
