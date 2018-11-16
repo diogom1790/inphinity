@@ -5,6 +5,7 @@
 /RAST/Xls/*
 /Patric/organisms/*
 /configuration/*.ini
+/*.csv
 ### Python ###
 # Byte-compiled / optimized / DLL files
 __pycache__/
