@@ -3,6 +3,7 @@
 /RAST/Fasta/*
 /RAST/Fasta_AA/*
 /RAST/Xls/*
+/Patric/organisms/*
 /configuration/*.ini
 ### Python ###
 # Byte-compiled / optimized / DLL files
