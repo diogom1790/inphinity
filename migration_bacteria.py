@@ -307,6 +307,10 @@ def insertBacteriumProteinsWholeDNAContigs(bacteriumObj, idStrainAPI, wholeDNAOb
         for protein in listProteins:
             createGeneProt(protein, bacteriumCreatedID, contigID)
 
+def checkBacteriumExistsByAcc(acc_number):
+    bacterium_existence = BacteriumJson.verifiyBacteriumExistanceByAcc(acc_number)
+    return bacterium_existence
+
 def load_get_bacterium(pathFile, arrayStates):
     """
     read the CSV with the organism id, strain id and their states. This method call the other for the insertion of the bacterium on the database
@@ -335,6 +339,13 @@ def load_get_bacterium(pathFile, arrayStates):
                 assert len(bacteriumList) == 1
 
                 bacterium = bacteriumList[0]
+
+
+                #Test acc_value
+                bacterium_existance = checkBacteriumExistsByAcc(bacterium.acc_num)
+                if bacterium_existance is True:
+                    print('This acc {0} already exists'.format(bacterium.acc_num))
+                    continue
 
                 accNumber = treatAccNumber(bacterium.acc_num)
                 source_data = bacterium.fk_source_data
