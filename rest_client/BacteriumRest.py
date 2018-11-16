@@ -41,3 +41,20 @@ class BacteriumAPI(object):
         jsonData = json.dumps(jsonData)
         result_post = PostRest(function = self.function, dataDict = jsonData).performRequest()
         return result_post
+
+    def setBacteriumExistsByAcc(self, acc_value):
+        """
+        Verify if a bacterium exists according an accValue
+
+        :param acc_value: accession number of the bacterium that you want to check the existence
+
+        :type acc_value: string
+
+        :return: json file with all the data
+        :rtype: string (json format)
+        """
+
+        self.function += 'accnumber/' + acc_value + '/exists/'
+
+        result_get = GetRest(function = self.function).performRequest()
+        return result_get

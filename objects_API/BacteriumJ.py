@@ -1,4 +1,5 @@
 from marshmallow import Schema, fields, post_load
+import json
 
 from rest_client.BacteriumRest import BacteriumAPI
 from objects_API.OrganismJ import *
@@ -76,3 +77,20 @@ class BacteriumJson(object):
         schema = BacteriumSchema()
         results = schema.load(resultsCreation)
         return results[0]
+
+    def verifiyBacteriumExistanceByAcc(acc_value):
+        """
+        Verify if a bacterium exists according an accValue
+
+        :param acc_value: accession number of the bacterium that you want to check the existence
+
+        :type acc_value: string
+
+        :return: return True or False according the existence
+        :rtype: boolean
+        """
+
+        resultsCreation = BacteriumAPI().setBacteriumExistsByAcc(acc_value = acc_value)
+        bacterium_existence = resultsCreation['value']['bacterium_exists']
+        return bacterium_existence
+
