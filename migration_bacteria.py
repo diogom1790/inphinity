@@ -274,6 +274,28 @@ def insertBacteriumProteinsWholeDNA(bacteriumObj, idStrainAPI, listProteins, who
     for protein in listProteins:
         createGeneProt(protein, bacteriumCreatedID)
 
+def testContigContainDNA(list_contig):
+    """
+    verify tha all the contigs contains a DNA sequence
+
+    :param list_contig: contain a list of contigs that you want to verify
+
+    :type list_contig: list(Contigs)
+
+
+    :return: true or false according the validation
+    :rtype bool
+
+    """
+    validation_contig = True
+    for contig_obj in list_contig:
+        if len(contig_obj.sequence) < 40:
+            validation_contig = False
+            break
+    return validation_contig
+
+
+
 def insertBacteriumProteinsWholeDNAContigs(bacteriumObj, idStrainAPI, wholeDNAObj, dictProts, dictConts):
 
     """
@@ -297,17 +319,22 @@ def insertBacteriumProteinsWholeDNAContigs(bacteriumObj, idStrainAPI, wholeDNAOb
 
     """
 
-    bacteriumCreatedID = createBacterium(bacteriumObj, idStrainAPI)
-    wholeDNACreatedID = createWholeDNA(wholeDNAObj, bacteriumCreatedID)
+    #Test contigs
+    list_contigs = Contig.get_all_Contigs_by_organism_id(bacteriumObj.id_organism)
+    contigs_validation = testContigContainDNA(list_contigs)
+    if contigs_validation == True:
+        bacteriumCreatedID = createBacterium(bacteriumObj, idStrainAPI)
+        wholeDNACreatedID = createWholeDNA(wholeDNAObj, bacteriumCreatedID)
 
-    for key,values in dictProts.items():
-        contig = dictConts[key]
-        listProteins = values
-        contigID = createContigNew(contig, bacteriumCreatedID)
-        for protein in listProteins:
-            createGeneProt(protein, bacteriumCreatedID, contigID)
+        for key,values in dictProts.items():
+            contig = dictConts[key]
+            listProteins = values
+            contigID = createContigNew(contig, bacteriumCreatedID)
+            for protein in listProteins:
+                createGeneProt(protein, bacteriumCreatedID, contigID)
 
 def checkBacteriumExistsByAcc(acc_number):
+    print(acc_number)
     bacterium_existence = BacteriumJson.verifiyBacteriumExistanceByAcc(acc_number)
     return bacterium_existence
 
@@ -346,6 +373,8 @@ def load_get_bacterium(pathFile, arrayStates):
                 if bacterium_existance is True:
                     print('This acc {0} already exists'.format(bacterium.acc_num))
                     continue
+
+
 
                 accNumber = treatAccNumber(bacterium.acc_num)
                 source_data = bacterium.fk_source_data
