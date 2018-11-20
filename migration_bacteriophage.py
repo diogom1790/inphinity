@@ -62,6 +62,26 @@ def treatAccNumber(accNumber, id_strain_bd):
     else:
         return accNumber
 
+
+def createContig(contigObj, organismID):
+    """
+    insert a Contig into a REST API
+
+    :param contigObj: Contig DBA object that you want to insert
+    :param organismID: ID of the organism which has this wholeDNA
+    :param listProtein: List of the proteins of the contig
+
+    :type contigObj: WholeDNA
+    :type organismID: int
+    :type listProtein: List[int]
+
+    :return: id of the Contig inserted
+    :rtype int
+    """
+    contigObjJson = ContigJson(id_db_online = contigObj.id_contig_db_outside, sequence_DNA= contigObj.sequence, fasta_head = contigObj.head, organism = organismID)
+    contigObjJson = contigObjJson.setContig()
+    return contigObjJson.id
+
 def treatGiNumber(giNumber):
     """
     Used to return null if the gi does not exists
