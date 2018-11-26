@@ -41,3 +41,22 @@ class StrainAPI(object):
         jsonData = json.dumps(jsonData)
         result_post = PostRest(function = self.function, dataDict = jsonData).performRequest()
         return result_post
+
+    def getByDesignationFkSpecie(self, designation, fk_specie):
+        """
+        Verify if a strain already exists in the database given a designation and fk_specie
+
+        :param designation: designation of the strain
+        :param fk_specie: fk of the specie
+
+        :type designation: string
+        :type fk_specie: integer
+
+        :return: json file with all the data
+        :rtype: string (json format)
+        """
+
+        self.function += 'existdesignstrain/' + designation + '/' + str(fk_specie) + '/'
+
+        result_get = GetRest(function = self.function).performRequest()
+        return result_get

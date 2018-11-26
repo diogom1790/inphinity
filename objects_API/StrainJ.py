@@ -1,4 +1,5 @@
 from marshmallow import Schema, fields, post_load
+import urllib.request
 
 from rest_client.StrainRest import StrainAPI
 
@@ -75,3 +76,27 @@ class StrainJson(object):
         schema = StrainSchema()
         results = schema.load(resultsCreation)
         return results[0]
+
+    def verifyStrainExistanceDesignationFkSpecie(designation:str, fk_specie:int):
+        """
+        Verify if a strain already exists given its designation and fk_specie
+
+        :param designation: designation of the strain
+        :param fk_specie: fk of the specie
+
+        :type designation: string
+        :type fk_specie: integer
+
+        :return: None or a strain if exists
+        :rtype: StrainJ
+        """
+
+        designation = urllib.parse.quote(designation)
+        strain_obj = StrainAPI().getByDesignationFkSpecie(designation, fk_specie)
+        print(strain_obj['strain_exists'])
+        if strain_obj['strain_exists'] == True:
+            schema = StrainSchema(only=['designation', 'specie','id'])
+            results = schema.load(strain_obj, many=False)
+            return results[0]
+        else:
+            return None

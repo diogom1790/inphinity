@@ -17,6 +17,7 @@ class GeneSchema(Schema):
     number_of_seq = fields.Int(required=False, allow_none=True)
     organism = fields.Int()
     protein_gene = fields.List(fields.Url)
+    description = fields.Str(required=False, allow_none=True)
 
     contig_gene = fields.Int(allow_none = True)
     position_start_contig = fields.Int(allow_none = True)
