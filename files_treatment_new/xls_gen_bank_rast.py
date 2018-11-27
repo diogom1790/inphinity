@@ -137,8 +137,6 @@ class Xls_gen_bank(_generic_xls_file):
         proteins_obj_list = []
         for protein_id in list_proteins_ids:
             dict_prot = self.get_information_line_by_protein_id(protein_id)
-            print(dict_prot['feature_id'])
-            print(type(dict_prot['feature_id']))
             protein_pt = Protein(id_protein = 0, id_accession = dict_prot.get('feature_id'), designation = dict_prot.get('function'), sequence_prot = dict_prot.get('aa_sequence'), sequence_dna = dict_prot.get('nucleotide_sequence'), start_point_cnt = int(dict_prot.get('start')), end_point_cnt = int(dict_prot.get('stop')), fk_id_contig = dict_prot.get('contig_id') )
             proteins_obj_list.append(protein_pt)
         return proteins_obj_list
