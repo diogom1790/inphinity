@@ -4,6 +4,7 @@
 /RAST/Fasta_AA/*
 /RAST/Xls/*
 /Patric/organisms/*
+/NCBI/organisms/*
 /configuration/*.ini
 /*.csv
 ### Python ###
