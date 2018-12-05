@@ -41,3 +41,20 @@ class BacteriophageAPI(object):
         jsonData = json.dumps(jsonData)
         result_post = PostRest(function = self.function, dataDict = jsonData).performRequest()
         return result_post
+
+    def setBacteriophageExistsByDesignation(self, designation):
+        """
+        Verify if a bacteriophage exists according a designation
+
+        :param designation: designation name of a bacteriophage
+
+        :type designation: string
+
+        :return: json file with all the data
+        :rtype: string (json format)
+        """
+
+        self.function += 'design/' + acc_value + '/exists/'
+
+        result_get = GetRest(function = self.function).performRequest()
+        return result_get
