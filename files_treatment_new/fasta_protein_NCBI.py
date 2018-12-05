@@ -16,16 +16,19 @@ class Fasta_protein_NCBI (_generic_fasta_file):
 
     """
 
-    def __init__(self, path_file):
+    def __init__(self, path_file, identification_key = 'protein_id'):
         """
         Constructor of the class fasta protein class, this one contain all methods for the treatment of fasta protein - proteic sequence of NCBI platform. After the parameters initialisation, the datails loaded
 
         :param path_file: Complete path with file name
+        :param identification_key: Key used to obtain the different proteins in the fasta files
 
         :type path_file: string - required
+        :type identification_key: string - required
         """
         _generic_fasta_file.__init__(self, path_file)
         self.read_fasta_file()
+        self.identification_key = identification_key
 
 
     def get_list_protein_name(self):
@@ -41,7 +44,9 @@ class Fasta_protein_NCBI (_generic_fasta_file):
             list_id.append(dict_elements['protein_id'])
         return list_id
 
-    def get_protein_sequence_prot_id(self, protein_id):
+
+
+    def get_protein_sequence_by_key(self, protein_id):
         """
         This method return the protein sequence based on the protein_id (ACC)
 
@@ -50,7 +55,7 @@ class Fasta_protein_NCBI (_generic_fasta_file):
         """
         for key, value in self.dict_fasta_data.items():
             dict_elements = self.split_header_by_square_brackets(value.description)
-            if dict_elements['protein_id'] == protein_id:
+            if dict_elements[self.identification_key] == protein_id:
                 return str(value.seq)
         return ''
 
@@ -67,8 +72,8 @@ class Fasta_protein_NCBI (_generic_fasta_file):
         values_p = [-1,-1]
         for key, value in self.dict_fasta_data.items():
             dict_elements = self.split_header_by_square_brackets(value.description)
-            if 'protein_id' in dict_elements:
-                acc_prot = dict_elements['protein_id'] 
+            if self.identification_key in dict_elements:
+                acc_prot = dict_elements[self.identification_key] 
             if 'protein' in dict_elements:
                 description = dict_elements['protein'] 
             if 'location' in dict_elements:
@@ -79,4 +84,22 @@ class Fasta_protein_NCBI (_generic_fasta_file):
             listOfProteins.append(protein_obj)
 
         return listOfProteins
+
+    def get_list_aa_protein(self):
+        """
+        This method return a list of the key_designation in the fasta file
+
+        :param key_designation: Key used to obtain the information in the fasta file
+
+        :type key_designation: string - required
+
+        :return: list of id proteins
+        :rtype: list(string)
+        """
+        list_id = []
+        for key, value in self.dict_fasta_data.items():
+            dict_elements = self.split_header_by_square_brackets(value.description)
+
+            list_id.append(dict_elements[self.identification_key])
+        return list_id
 
