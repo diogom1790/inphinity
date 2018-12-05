@@ -333,6 +333,44 @@ def insertBacteriumProteinsWholeDNAContigs(bacteriumObj, idStrainAPI, wholeDNAOb
             for protein in listProteins:
                 createGeneProt(protein, bacteriumCreatedID, contigID)
 
+def insertBacteriumProteinsWholeDNAContigsNopositions(bacteriumObj, idStrainAPI, wholeDNAObj, dictProts, dictConts):
+
+    """
+    insert the bacterium, the whole genome, the contigs, the proteins, and the genes without protein s contig positions
+
+    :param bacteriumObj: Organism object (old DB)
+    :param idStrainAPI: id of the strain on the new DB (API)
+    :param wholeDNAObj: Whole Genome object (old DB)
+    :param dictProts: Dict with the proteins Key: id of the contig - Value: list of proteins (old DB)
+    :param dictConts: Dict with the contigs Key: id of the contig - Value: contig object (old DB)
+
+    :type bacteriumObj: Organism_new
+    :type idStrainAPI: int
+    :type wholeDNAObj: WholeDNA_new
+    :type dictProts: dictionary{int: list[Proteins]}
+    :type dictConts: dictionary{int: Contig}
+
+
+    :return: matrix with all the data
+    :rtype panda dataframe
+
+    """
+
+    #Test contigs
+    list_contigs = Contig.get_all_Contigs_by_organism_id(bacteriumObj.id_organism)
+    contigs_validation = testContigContainDNA(list_contigs)
+    if contigs_validation == True:
+        bacteriumCreatedID = createBacterium(bacteriumObj, idStrainAPI)
+        wholeDNACreatedID = createWholeDNA(wholeDNAObj, bacteriumCreatedID)
+
+        for contig in list_contigs:
+            print('Hello')
+            contigID = createContigNew(contig, bacteriumCreatedID)
+        for key,proteinlist in dictProts.items():
+            for protein in proteinlist:
+                createProtein(protein, bacteriumCreatedID, None)
+                print('Hello')
+
 def checkBacteriumExistsByAcc(acc_number):
     print(acc_number)
     bacterium_existence = BacteriumJson.verifiyBacteriumExistanceByAcc(acc_number)
@@ -350,15 +388,15 @@ def load_get_bacterium(pathFile, arrayStates):
     :rtype panda dataframe
 
     """
-    arrayProblems = [15104, 15123, 15334, 15336, 15342, 15363, 15373, 15374, 15415, 15416, 15417, 15418, 15419, 15420]
     wholeDNA = None
     dataframe = pd.read_csv(pathFile)
     for index, row in dataframe.iterrows():
-        if row['organism Type'] is '1':
+        print(row['organism_type'])
+        if row['organism_type'] == 1:
             row_verification = [[row['strain_db'], row['strain_api'],2]]
 
             id_strain_API = row['strain_api']
-            if id_strain_API not in arrayStates[:, 1] and id_strain_API not in arrayProblems:
+            if id_strain_API not in arrayStates[:, 1]:
                 arrayStates = np.append(arrayStates, row_verification, axis=0)
                 writeCSVStateInsertion(arrayStates)
 
@@ -396,6 +434,8 @@ def load_get_bacterium(pathFile, arrayStates):
                     if canInsert == True:
                         print('Hello)')
                         insertBacteriumProteinsWholeDNAContigs(bacterium, organism_codeAPI, wholeDNAObj, dictProts, dictConts)
+                    elif qtyProts == 0:
+                        insertBacteriumProteinsWholeDNAContigsNopositions(bacterium, organism_codeAPI, wholeDNAObj, dictProts, dictConts)
                     else:
                         writeCSVProteinContigNotEqual(bacterium.id_organism, len(listProts),qtyProts)
                 else:
@@ -735,9 +775,9 @@ AuthenticationAPI().createAutenthicationToken()
 # tation inside the new db (API rest)
 #===============================================
 
-dataFrame = pd.read_csv('./correspondenceIDSStrains2.csv')
+dataFrame = pd.read_csv('./correspondenceIDSStrains3.csv')
 
-path = './correspondenceIDSStrains2.csv'
+path = './correspondenceIDSStrains3.csv'
 pathInsertion = './stateInsertionBacteria.csv'
 
 dataframState = load_CSV_Insertion(pathInsertion)
