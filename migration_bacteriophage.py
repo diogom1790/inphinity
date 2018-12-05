@@ -31,16 +31,16 @@ from objects_new.Strains_new import Strain
 #===============================================
 
 def writeCSVStateInsertion(arrayContentStates):
-    np.savetxt('stateInsertionBacteriophage.csv', arrayContentStates.astype(int), fmt='%i', delimiter=",")
+    np.savetxt('stateInsertionBacteriophage_V2.csv', arrayContentStates.astype(int), fmt='%i', delimiter=",")
 
 def writeCSVProteinNumber(idOrganism, qtyProteins):
-    with open('proteinsNumberBacteriophage.csv', 'a') as csvFile:
+    with open('proteinsNumberBacteriophage_V2.csv', 'a') as csvFile:
         writer = csv.writer(csvFile, delimiter = ',', lineterminator='\n')
         writer.writerow([idOrganism, qtyProteins])
     csvFile.close()
 
 def writeCSVProteinContigNotEqual(idOrganism, qtyProteins, qtyProtsInContig):
-    with open('contigProteinsNotEqualsBacteriophage.csv', 'a') as csvFile:
+    with open('contigProteinsNotEqualsBacteriophage_V2.csv', 'a') as csvFile:
         writer = csv.writer(csvFile, delimiter = ',', lineterminator='\n')
         writer.writerow([idOrganism, qtyProteins, qtyProtsInContig])
     csvFile.close()
@@ -403,18 +403,25 @@ def load_get_bacteriophage(pathFile, arrayStates):
     dataframe = pd.read_csv(pathFile)
 
     for index, row in dataframe.iterrows():
-        if row['organism Type'] is '2':
+        if row['organism_type'] is 3:
             row_verification = [[row['strain_db'], row['strain_api'],2]]
-
+            
             id_strain_API = row['strain_api']
             if id_strain_API not in arrayStates[:, 1] and id_strain_API not in arrayProblems:
+                print(row['strain_db'])
                 arrayStates = np.append(arrayStates, row_verification, axis=0)
                 writeCSVStateInsertion(arrayStates)
 
                 bacteriophageList = Organism.get_organism_by_fk_strain(row['strain_db'])
-                assert len(bacteriophageList) == 1
+                assert len(bacteriophageList) == 2
 
-                bacteriophage = bacteriophageList[0]
+                bateriophage_take = 0
+
+                if bacteriophageList[0].qty_proteins > bacteriophageList[1].qty_proteins:
+                    bateriophage_take = 0
+                else:
+                    bateriophage_take = 1
+                bacteriophage = bacteriophageList[bateriophage_take]
 
                 organism_code = row['strain_db']
                 organism_codeAPI = row['strain_api']
@@ -426,6 +433,8 @@ def load_get_bacteriophage(pathFile, arrayStates):
                 gi_number = treatGiNumber(bacteriophage.gi)
                 wholeDNAObj = getWholeGenomById(bacteriophage.fk_whole_genome)
                 strain = bacteriophage.fk_strain
+
+                print(strain)
 
 
 
@@ -479,7 +488,7 @@ dataFrame = pd.read_csv('./correspondenceIDSStrains2.csv')
 
 
 path = './correspondenceIDSStrains2.csv'
-pathInsertion = './stateInsertionBacteriophage.csv'
+pathInsertion = './stateInsertionBacteriophage_V2.csv'
 
 
 dataframState = load_CSV_Insertion(pathInsertion)
