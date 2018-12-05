@@ -126,6 +126,7 @@ def createBacteriophage(acc_number, person_responsible, source_data, designation
 
     return bacteriophageObjJson.id
 
+
 def manageOrganismsContent(dict_files):
     for key, value in dict_files.items():
 
@@ -149,10 +150,10 @@ def manageOrganismsContent(dict_files):
         #assert len(list_contigs_ids_fasta) == len(list_contigs_ids_xls)
 
         #Designation of the bacteriophage -------------------
-        phage_designation = key.replace("Escherichia coli ","")
+        phage_designation = key.replace("Escherichia coli","")
 
         phage_designation = 'Escherichia_coli_' + phage_designation
-        source_data = 5
+        source_data = 3
         person_responsible = 2
 
         acc_number = 'acc_' + phage_designation
@@ -164,8 +165,7 @@ def manageOrganismsContent(dict_files):
 
         for contig_old in list_of_contigs:
             createAndInsertElements(contig_old, id_bacteriophage, xls_genbank_patric_obj)
- 
-            
+
 
 #Token connection
 conf_obj = ConfigurationAPI()
