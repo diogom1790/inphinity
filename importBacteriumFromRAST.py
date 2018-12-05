@@ -187,11 +187,8 @@ list_files_done = []
 cwd = os.getcwd()
 
 dict_names = {}
-dict_names['83333.261'] = 'E042'
-dict_names['83333.371'] = '33802'
-dict_names['83333.384'] = 'CFT079'
-dict_names['83333.382'] = 'B7A'
-dict_names['83333.363'] = 'RKI'
+dict_names['470.1135'] = 'Acinetobacter baumannii MDR-ZJ06'
+dict_names['470.1134'] = 'Acinetobacter baumannii MDR-TJ'
 
 
 for file_name in list_files:
@@ -219,7 +216,8 @@ for file_name in list_files:
         person_responsible = 2
         source_data = 3
 
-        fk_specie = 318
+        fk_specie = 613
+
 
         strain = createStrain(dict_names[file_name[:-4]], fk_specie)
         id_strain = strain.id
