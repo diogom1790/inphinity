@@ -76,3 +76,20 @@ class BacteriophageJson(object):
         schema = BacteriophageSchema()
         results = schema.load(resultsCreation)
         return results[0]
+
+
+    def verifiyBacteriophageExistanceByDesignation(designation):
+        """
+        Verify if a bacteriophage exists according a designation
+
+        :param designation: accession number of the bacterium that you want to check the existence
+
+        :type designation: string
+
+        :return: return True or False according the existence
+        :rtype: boolean
+        """
+
+        resultsCreation = BacteriophageAPI().setBacteriumExistsByAcc(acc_value = acc_value)
+        bacteriophage_existence = resultsCreation['value']['bacteriophage_exists']
+        return bacteriophage_existence
