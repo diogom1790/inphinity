@@ -61,6 +61,23 @@ class BacteriophageJson(object):
         results = schema.load(list_bacteriophages, many=True)
         return results[0]
 
+    def getByID(id_bacteriophage:int):
+
+        """
+        get all the Bacteria on the database
+
+        :param id_bacteriophage: id of the bacteriophage that it will be returned
+
+        :type id_bacteriophage: int
+
+        :return: list of Bacteriophage
+        :rtype: vector[BacteriophageJson]
+        """
+        bacteriophage = BacteriophageAPI().get_by_id(id_bacteriophage)
+        schema = BacteriophageSchema()
+        results = schema.load(bacteriophage, many=False)
+        return results[0]
+
     def setBacteriophage(self):
         """
         set new bacterium

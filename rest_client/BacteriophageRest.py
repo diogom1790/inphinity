@@ -31,6 +31,24 @@ class BacteriophageAPI(object):
         result_get = GetRest(function = self.function).performRequest()
         return result_get
 
+    def get_by_id(self, id_bacteriophage):
+        """
+        get a bacteriophage given it id
+
+        :param id_bacteriophage: id of th bacteriophage
+
+        :type id_bacteriophage: int
+
+        :return: json file with all the data
+        :rtype: string (json format)
+        """
+
+        self.function += str(id_bacteriophage) + '/'
+
+        result_get = GetRest(function = self.function).performRequest()
+        return result_get
+
+
     def set_bacteriophage(self, jsonData):
         """
         set new bacteriophage in the database
