@@ -64,14 +64,14 @@ class BacteriophageJson(object):
     def getByID(id_bacteriophage:int):
 
         """
-        get all the Bacteria on the database
+        get a bacteriophage given its id
 
         :param id_bacteriophage: id of the bacteriophage that it will be returned
 
         :type id_bacteriophage: int
 
-        :return: list of Bacteriophage
-        :rtype: vector[BacteriophageJson]
+        :return: a json of the bacteriophage
+        :rtype: BacteriophageJson
         """
         bacteriophage = BacteriophageAPI().get_by_id(id_bacteriophage)
         schema = BacteriophageSchema()

@@ -31,7 +31,7 @@ class BacteriophageAPI(object):
         result_get = GetRest(function = self.function).performRequest()
         return result_get
 
-    def get_by_id(self, id_bacteriophage):
+    def get_by_id(self, id_bacteriophage:int):
         """
         get a bacteriophage given it id
 

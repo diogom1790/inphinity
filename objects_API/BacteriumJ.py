@@ -78,6 +78,23 @@ class BacteriumJson(object):
         results = schema.load(resultsCreation)
         return results[0]
 
+    def getByID(id_bacterium:int):
+
+        """
+        get a bacterium given its id
+
+        :param id_bacterium: id of the bacterium that it will be returned
+
+        :type id_bacteriophage: int
+
+        :return: a json of the bacterim 
+        :rtype: BacteriumJson
+        """
+        bacterium = BacteriumAPI().get_by_id(id_bacterium)
+        schema = BacteriumSchema()
+        results = schema.load(bacterium, many=False)
+        return results[0]
+
     def verifiyBacteriumExistanceByAcc(acc_value):
         """
         Verify if a bacterium exists according an accValue

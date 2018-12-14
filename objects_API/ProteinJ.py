@@ -98,7 +98,7 @@ class ProteinJson(object):
         :rtype: ProteinJson
         """
 
-        schema = ProteinSchema(only=['id_db_online','accession_num','organism','gene','sequence_AA','fasta_head', 'description','position_start','position_end'])
+        schema = ProteinSchema(only=['accession_num','organism','gene','sequence_AA','fasta_head', 'description','position_start','position_end'])
         jsonProtein = schema.dump(self)
         resultsCreation = ProteinAPI().set_protein(jsonData = jsonProtein.data)
         schema = ProteinSchema()
