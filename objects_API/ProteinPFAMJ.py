@@ -26,7 +26,7 @@ class ProteinPFAMJson(object):
     This class manage the object and is used to map them into json format
     """
 
-    def __init__(self, date_creation:datetime, domain:int, person_responsible:int, protein:int, source:int, id = None):
+    def __init__(self, date_creation:datetime, domain:int, person_responsible:int, protein:int, source:int, e_value:float, id = None):
         """
         Initialization of the class
 
@@ -35,7 +35,8 @@ class ProteinPFAMJson(object):
         :param person_responsible_id: id of the person_responsible
         :param protein_id: id of the protein
         :param source_id: id of the source pfam
-        :param date_creation: date of teh creation
+        :param date_creation: date of the creation
+        :param e-value: e-value of the match
 
         :type id: int
         :type domain_id: int
@@ -43,6 +44,7 @@ class ProteinPFAMJson(object):
         :type protein_id: int
         :type source_id: int
         :type date_creation: datetime
+        :type e-value: float
 
         """
         self.id = id
@@ -51,6 +53,7 @@ class ProteinPFAMJson(object):
         self.protein = protein
         self.source = source
         self.date_creation = date_creation
+        self.e_value = e_value
 
     def __str__(self):
         """
@@ -81,7 +84,7 @@ class ProteinPFAMJson(object):
         :return: new domain completed with the id
         :rtype: DomainJ
         """
-        schema = ProteinPFAMSchema(only=['date_creation','domain','person_responsible','protein','source'])
+        schema = ProteinPFAMSchema(only=['date_creation','domain','person_responsible','protein','source','e_value'])
         json_protein_Pfam = schema.dump(self)
         resultsCreation = ProteinPFAMAPI().setProteinPFAM(jsonData = json_protein_Pfam.data)
         schema = ProteinPFAMSchema()
