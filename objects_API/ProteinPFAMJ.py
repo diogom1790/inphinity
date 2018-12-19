@@ -16,6 +16,7 @@ class ProteinPFAMSchema(Schema):
     person_responsible = fields.Int()
     protein = fields.Int()
     source = fields.Int()
+    e_value = fields.Float()
 
     @post_load
     def make_ProteinPFAM(self, data):

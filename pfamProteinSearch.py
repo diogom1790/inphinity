@@ -4,11 +4,14 @@ import subprocess
 import re
 import os
 import pandas as pd
+import numpy as np
+import csv
 
 
 from objects_API.DomainJ import DomainJson
 from objects_API.SourcePFAMJ import SourcePFAMJson
 from objects_API.ProteinJ import ProteinJson
+from objects_API.ProteinPFAMJ import ProteinPFAMJson
 
 from configuration.configuration_api import ConfigurationAPI
 from rest_client.AuthenticationRest import AuthenticationAPI
@@ -110,7 +113,7 @@ def createTemporaryFileWithSequence(sequence_AA, protein_id):
     :rtype str
 
     """
-    file_name = str(id_sequence) + '.fasta'
+    file_name = str(protein_id) + '.fasta'
     with open(os.path.join('tmp_prots', file_name), 'w') as file:
         file.write(">no_head\n")
         file.write(sequence_AA)
@@ -233,19 +236,34 @@ def insertPFAMProteins(vec_pfam_prot, protein_id):
 
         id_pfam = getPFAMId(pfam)
 
-        protein_pfam_json = ProteinPFAMJson(domain = id_pfam, person_responsible = 5, protein = protein_id, source = 1, date_creation = data_day, e_value = e_value)
+        protein_pfam_json = ProteinPFAMJson(domain = id_pfam, person_responsible = 5, protein = protein_id, source = 5, date_creation = data_day, e_value = e_value)
+        protein_pfam_json.setProteinPFAM()
 
 
 def readCSVBacteriumID(file_path):
     dataframe_bac_id = pd.read_csv(file_path, dtype={'organism_ptr_id':int, 'strain_id':int})
     return dataframe_bac_id
 
+def saveProteinVerifiedID(path_file, protein_id_vec):
+    np.savetxt(path_file, protein_id_vec, delimiter=",", fmt='%i')
+
+def getProteinsIdVerifiedID(path):
+    if os.path.isfile(path) == True:
+        vec_ids_proteins = np.genfromtxt(path, delimiter=',')
+    else:
+        return []
+    return vec_ids_proteins
+
 conf_obj = ConfigurationAPI()
 conf_obj.load_data_from_ini()
 AuthenticationAPI().createAutenthicationToken()
 
 domains_Start = 'Scores for complete sequence (score includes all domains):'
-
+dictionary_domains = getListDomainsInDB()
+data_day = datetime.datetime.now().date()
+protein_pfam_json = ProteinPFAMJson(domain = 161, person_responsible = 5, protein = 8078373, source = 1, date_creation = data_day, e_value=float(1.23))
+protein_pfam_json.setProteinPFAM()
+print('Hellooo')
 #list_protein_PFAM = ProteinPFAMJson.getAllAPI()
 #for element in list_protein_PFAM:
 #    print(element)
@@ -256,40 +274,38 @@ domains_Start = 'Scores for complete sequence (score includes all domains):'
 
 
 #print(protein_pfam_json)
-file = open("restls_fasta_dom.txt", "r") 
-content =  file.read() 
-vec_domains = parseDomainsResults(content)
+#file = open("restls_fasta_dom.txt", "r") 
+#content =  file.read() 
+#vec_domains = parseDomainsResults(content)
+
 #Get Bacteriums IDS
 path_csv = 'inphinity_orm_bacterium.csv'
 datafram_ids_bact = readCSVBacteriumID(path_csv)
-#Get List of proteins of this bacterium
-dict_proteins = getDictProteinsByOrganismID(56)
 
-#process each protein
-for key, value in dict_proteins.items():
-    #Creat temp files
-    temp_file_name = createTemporaryFileWithSequence(value, key)
-    results_pfam_search = executePFAMSearch(temp_file_name)
-    vec_domains = parseDomainsResults(results_pfam_search)
-    insertPFAMProteins(vec_domains, key)
-    print(vec_domains)
+#Treatment of each bacterium
+for index, row in datafram_ids_bact.iterrows():
+    path_file_ids = str(index) + '_bacterium.csv'
+    vec_ids_proteins = getProteinsIdVerifiedID(path_file_ids)
+    id_bacterium = row['organism_ptr_id']
 
-print('hellllooooooooo')
-temp_file_name = createTemporaryFileWithSequence('asdasdadsasd')
-temp_file_output = createTemporaryFile()
+    #Get List of proteins of this bacterium
+    dict_proteins = getDictProteinsByOrganismID(id_bacterium)
 
-dictionary_domains = getListDomainsInDB()
+    #process each protein
+    for key, value in dict_proteins.items():
+        #Create temp files
+        temp_file_name = createTemporaryFileWithSequence(value, key)
+        #Research of PFAM domains
+        results_pfam_search = executePFAMSearch(temp_file_name)
+        #Parse the content rensults of HMMSCAN
+        vec_domains = parseDomainsResults(results_pfam_search)
+        #Insert PFAM domains for the protein
+        insertPFAMProteins(vec_domains, key)
+        vec_ids_proteins.append(key)
 
-id_pfam = getPFAMId('PF0083')
-print(id_pfam)
+        #Each 100 proteins save them
+        if len(vec_ids_proteins) % 100 == 0:
+            saveProteinVerifiedID(path_file_ids, array_values)
 
-executePFAMSearch(temp_file_name, temp_file_output)
-
-list_source_pfam = SourcePFAMJson.getAllAPI()
-for source_pfam in list_source_pfam:
-    print(source_pfam)
-
-source_pfam_json = SourcePFAMJson(designation = 'aaaaa')
-source_pfam_json = source_pfam_json.setSourcePFAM()
-print(source_pfam_json)
+        print(vec_domains)
 
