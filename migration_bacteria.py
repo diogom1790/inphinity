@@ -404,10 +404,11 @@ def load_get_bacterium(pathFile, arrayStates):
                 assert len(bacteriumList) == 1
 
                 bacterium = bacteriumList[0]
-
+                bacterium.acc_num = bacterium.acc_num + '_V2'
 
                 #Test acc_value
                 bacterium_existance = checkBacteriumExistsByAcc(bacterium.acc_num)
+                #############
                 if bacterium_existance is True:
                     print('This acc {0} already exists'.format(bacterium.acc_num))
                     continue
@@ -428,7 +429,7 @@ def load_get_bacterium(pathFile, arrayStates):
 
 
 
-                if len(listContigs)> 0:
+                if len(listContigs)> 0 and len(listContigs[0].sequence) > 10:
                     dictProts, dictConts = mapProteinsContigs(listProts, listContigs)
                     canInsert, qtyProts = verifyQtyProtContigs(len(listProts),dictProts,dictConts)
                     if canInsert == True:
@@ -775,11 +776,12 @@ AuthenticationAPI().createAutenthicationToken()
 # tation inside the new db (API rest)
 #===============================================
 
-dataFrame = pd.read_csv('./correspondenceIDSStrains3.csv')
+dataFrame = pd.read_csv('./correspondenceIDSStrains4.csv')
 
-path = './correspondenceIDSStrains3.csv'
+path = './correspondenceIDSStrains4.csv'
 pathInsertion = './stateInsertionBacteria.csv'
 
 dataframState = load_CSV_Insertion(pathInsertion)
 load_get_bacterium(path, dataframState)
+
 print('end')

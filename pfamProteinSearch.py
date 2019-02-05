@@ -90,7 +90,7 @@ def getDictProteinsByOrganismID(id_organism:int):
     """
 
     dictionary_protein_sequence = {}
-    list_proteins = ProteinJson.getByOrganismID(4575)
+    list_proteins = ProteinJson.getByOrganismID(660)
     for protein in list_proteins:
         protein_id = protein['id']
         protein_sequence_AA = protein['sequence_AA']
@@ -260,10 +260,7 @@ AuthenticationAPI().createAutenthicationToken()
 
 domains_Start = 'Scores for complete sequence (score includes all domains):'
 dictionary_domains = getListDomainsInDB()
-data_day = datetime.datetime.now().date()
-protein_pfam_json = ProteinPFAMJson(domain = 161, person_responsible = 5, protein = 8078373, source = 1, date_creation = data_day, e_value=float(1.23))
-protein_pfam_json.setProteinPFAM()
-print('Hellooo')
+
 #list_protein_PFAM = ProteinPFAMJson.getAllAPI()
 #for element in list_protein_PFAM:
 #    print(element)

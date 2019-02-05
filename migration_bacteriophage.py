@@ -184,6 +184,8 @@ def createBacteriophage(bacteriophageOBJ, strainDesignation):
     :rtype int
     """
 
+
+    strainDesignation = strainDesignation + '_' + bacteriophageOBJ.acc_num
     bacteriophageObjJson = BacteriophageJson(acc_number = bacteriophageOBJ.acc_num, gi_number = bacteriophageOBJ.gi, person_responsible = bacteriophageOBJ.fk_source, source_data = bacteriophageOBJ.fk_source_data, designation = strainDesignation)
     bacteriophageObjJson = bacteriophageObjJson.setBacteriophage()
     return bacteriophageObjJson.id
@@ -225,7 +227,10 @@ def createProtein(proteinOBJ, fkOrganism, fkGene):
     :return: id of the protein inserted
     :rtype int
     """
-    proteinObjJson = ProteinJson(id_db_online = proteinOBJ.id_accession, organism = fkOrganism, gene = fkGene, sequence_AA = proteinOBJ.sequence_prot, fasta_head = proteinOBJ.sequence_prot, description = proteinOBJ.designation, accession_num = proteinOBJ.id_accession, position_start = proteinOBJ.start_point, position_end = proteinOBJ.end_point)
+    #proteinObjJson = ProteinJson(id_db_online = proteinOBJ.id_accession, organism = fkOrganism, gene = fkGene, sequence_AA = proteinOBJ.sequence_prot, fasta_head = proteinOBJ.sequence_prot, description = proteinOBJ.designation, accession_num = proteinOBJ.id_accession, position_start = proteinOBJ.start_point, position_end = proteinOBJ.end_point)
+
+    proteinObjJson = ProteinJson(id_db_online = proteinOBJ.id_accession, organism = fkOrganism, gene = fkGene, sequence_AA = proteinOBJ.sequence_prot, fasta_head = proteinOBJ.sequence_prot, description = 'No description', accession_num = 'No acc', position_start = proteinOBJ.start_point, position_end = proteinOBJ.end_point)
+
     proteinObjJson = proteinObjJson.setProtein()
     return proteinObjJson.id
 
@@ -403,7 +408,7 @@ def load_get_bacteriophage(pathFile, arrayStates):
     dataframe = pd.read_csv(pathFile)
 
     for index, row in dataframe.iterrows():
-        if row['organism_type'] is 3:
+        if row['organism_type'] == 4:
             row_verification = [[row['strain_db'], row['strain_api'],2]]
             
             id_strain_API = row['strain_api']
@@ -413,14 +418,15 @@ def load_get_bacteriophage(pathFile, arrayStates):
                 writeCSVStateInsertion(arrayStates)
 
                 bacteriophageList = Organism.get_organism_by_fk_strain(row['strain_db'])
-                assert len(bacteriophageList) == 2
+                assert len(bacteriophageList) == 1
 
+
+
+                #if bacteriophageList[0].qty_proteins > bacteriophageList[1].qty_proteins:
+                #    bateriophage_take = 0
+                #else:
+                #    bateriophage_take = 1
                 bateriophage_take = 0
-
-                if bacteriophageList[0].qty_proteins > bacteriophageList[1].qty_proteins:
-                    bateriophage_take = 0
-                else:
-                    bateriophage_take = 1
                 bacteriophage = bacteriophageList[bateriophage_take]
 
                 organism_code = row['strain_db']
@@ -433,6 +439,7 @@ def load_get_bacteriophage(pathFile, arrayStates):
                 gi_number = treatGiNumber(bacteriophage.gi)
                 wholeDNAObj = getWholeGenomById(bacteriophage.fk_whole_genome)
                 strain = bacteriophage.fk_strain
+                
 
                 print(strain)
 
@@ -449,6 +456,7 @@ def load_get_bacteriophage(pathFile, arrayStates):
                         insertBacteriophageProteinsWholeDNAContigs(bacteriophage, organism_code, wholeDNAObj, dictProts, dictConts)
                     else:
                         writeCSVProteinContigNotEqual(bacteriophage.id_organism, len(listProts),qtyProts)
+                        insertBacteriophageProteinsWholeDNA(bacteriophage, organism_code, listProts, wholeDNAObj)
                 else:
                     print("Hello")
                     insertBacteriophageProteinsWholeDNA(bacteriophage, organism_code, listProts, wholeDNAObj)
@@ -484,10 +492,10 @@ conf_obj = ConfigurationAPI()
 conf_obj.load_data_from_ini()
 AuthenticationAPI().createAutenthicationToken()
 
-dataFrame = pd.read_csv('./correspondenceIDSStrains2.csv')
+dataFrame = pd.read_csv('./correspondenceIDSStrains5.csv')
 
 
-path = './correspondenceIDSStrains2.csv'
+path = './correspondenceIDSStrains5.csv'
 pathInsertion = './stateInsertionBacteriophage_V2.csv'
 
 
