@@ -2,15 +2,16 @@ import json
 from rest_client.GetRest import GetRest
 from rest_client.PostRest import PostRest
 
-class DomainAPI(object):
+
+class DomainInteractionSourceAPI(object):
     """
-    This class manage the requests for the Domain objects into the restAPI
+    This class manage the requests for the Domain Interaction Source objects into the restAPI
 
     :param function: the name of the function to access in the rest API
     :type function: string
     """
 
-    def __init__(self, function='domain/'):
+    def __init__(self, function='domaininteractsource/'):
         """
         Initialization of the class
 
@@ -21,9 +22,10 @@ class DomainAPI(object):
         """
         self.function = function
 
+
     def get_all(self):
         """
-        get all the domains on the database
+        get all the domains Interaction Sources on the database
 
         :return: json file with all the data
         :rtype: string (json format)
@@ -31,9 +33,9 @@ class DomainAPI(object):
         result_get = GetRest(function = self.function).performRequest()
         return result_get
 
-    def setDomain(self, jsonData):
+    def setDomainInteractionSource(self, jsonData):
         """
-        set new domain in the database
+        set new domain interaction source  in the database
 
         :return: json file with the last domain created
         :rtype: string (json format)

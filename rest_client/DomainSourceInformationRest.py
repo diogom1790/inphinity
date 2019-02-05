@@ -2,15 +2,16 @@ import json
 from rest_client.GetRest import GetRest
 from rest_client.PostRest import PostRest
 
-class DomainAPI(object):
+
+class DomainSourceInformationAPI(object):
     """
-    This class manage the requests for the Domain objects into the restAPI
+    This class manage the requests for the Domain sources information (3DID, iPfam,...) objects into the restAPI
 
     :param function: the name of the function to access in the rest API
     :type function: string
     """
 
-    def __init__(self, function='domain/'):
+    def __init__(self, function='domainsourceinf/'):
         """
         Initialization of the class
 
@@ -23,7 +24,7 @@ class DomainAPI(object):
 
     def get_all(self):
         """
-        get all the domains on the database
+        get all the domains sources information on the database
 
         :return: json file with all the data
         :rtype: string (json format)
@@ -31,11 +32,11 @@ class DomainAPI(object):
         result_get = GetRest(function = self.function).performRequest()
         return result_get
 
-    def setDomain(self, jsonData):
+    def setDomainSOurceInformation(self, jsonData):
         """
-        set new domain in the database
+        set new domain source information in the database
 
-        :return: json file with the last domain created
+        :return: json file with the last domain source information created
         :rtype: string (json format)
         """
         jsonData = json.dumps(jsonData)

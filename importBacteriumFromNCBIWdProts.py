@@ -203,10 +203,10 @@ AuthenticationAPI().createAutenthicationToken()
 dir_path = os.path.dirname(os.path.realpath(__file__))
 print(dir_path)
 
-path = dir_path + '/NCBI/organisms/JRGG01.wd.fasta'
+path = dir_path + '/NCBI/organisms/NZ_ABYX00000000.wd.fasta'
 #print(path)
 
-path_proteins = dir_path + '/NCBI/organisms/JRGG01.prot_aa.fasta'
+path_proteins = dir_path + '/NCBI/organisms/NZ_ABYX00000000.prot_aa.fasta'
 #path_proteins_CDS = dir_path + '/NCBI/organisms/NZ_CP016896.1.prot_csd.fasta'
 
 fasta_protein_obj_dict = Fasta_protein_NCBI(path_proteins, 'protein_id')
@@ -218,10 +218,10 @@ fasta_protein_obj_dict = Fasta_protein_NCBI(path_proteins, 'protein_id')
 
 person_responsible = 3
 source_data = 1
-id_strain = 16224
+id_strain = 15104
 
 
-id_bacterium = createBacterium('NZ_JRGG00000000', person_responsible, source_data, id_strain)
+id_bacterium = createBacterium('NZ_ABYX00000000', person_responsible, source_data, id_strain)
 #wholeGenomeFastaObj = Fasta_whole_genome_NCBI(path)
 #wdGenomeObj = wholeGenomeFastaObj.get_whole_genome()
 #createWholeGenome(wdGenomeObj, id_bacterium)

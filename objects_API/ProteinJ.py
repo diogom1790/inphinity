@@ -104,3 +104,19 @@ class ProteinJson(object):
         schema = ProteinSchema()
         results = schema.load(resultsCreation)
         return results[0]
+
+    def getByOrganismID(organism_id:int):
+        """
+        get all proteins of a given organism
+
+        :param organism_id: organism ID
+
+        :type organism_id: int
+
+        :return: all the proteins of the given organism id
+        :rtype: ProteinJson
+        """
+
+        resultsCreation = ProteinAPI().getByOrganismID(organism_id = organism_id)
+        protein_existence = resultsCreation
+        return protein_existence

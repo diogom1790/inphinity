@@ -1,10 +1,11 @@
 from marshmallow import Schema, fields, post_load
 
-from rest_client.DomainRest import DomainAPI
+from rest_client.SourcePFAMRest import SourcePFAMAPI
 
-class DomainSchema(Schema):
+
+class SourcePFAMSchema(Schema):
     """
-    This class map the json into the object Domain
+    This class map the json into the object SourcePFAM
 
     ..note:: see marshmallow API
     """
@@ -12,10 +13,10 @@ class DomainSchema(Schema):
     designation = fields.Str()
 
     @post_load
-    def make_Domain(self, data):
-        return DomainJson(**data)
+    def make_SourcePFAM(self, data):
+        return SourcePFAMJson(**data)
 
-class DomainJson(object):
+class SourcePFAMJson(object):
     """
     This class manage the object and is used to map them into json format
     """
@@ -25,7 +26,7 @@ class DomainJson(object):
         Initialization of the class
 
         :param id: name of the function
-        :param designation: name of the domain
+        :param designation: name of the sourcePFAM
 
         :type id: int
         :type designation: string 
@@ -44,26 +45,26 @@ class DomainJson(object):
     def getAllAPI():
 
         """
-        get all the domain on the database
+        get all the sourcePFAM on the database
 
-        :return: list of Domain
-        :rtype: vector[DomainJ]
+        :return: list of SourcePFAM
+        :rtype: vector[SourcePFAMJ]
         """
-        list_domain = DomainAPI().get_all()
-        schema = DomainSchema()
-        results = schema.load(list_domain, many=True)
+        list_source_pfam = SourcePFAMAPI().get_all()
+        schema = SourcePFAMSchema()
+        results = schema.load(list_source_pfam, many=True)
         return results[0]
 
-    def setDomain(self):
+    def setSourcePFAM(self):
         """
         set new domain
 
         :return: new domain completed with the id
-        :rtype: DomainJ
+        :rtype: SourcePFAMJ
         """
-        schema = DomainSchema(only=['designation'])
-        json_domain = schema.dump(self)
-        resultsCreation = DomainAPI().setDomain(jsonData = json_domain.data)
-        schema = DomainSchema()
+        schema = SourcePFAMSchema(only=['designation'])
+        json_source_pfam = schema.dump(self)
+        resultsCreation = SourcePFAMAPI().setSourcePFAM(jsonData = json_source_pfam.data)
+        schema = SourcePFAMSchema()
         results = schema.load(resultsCreation)
         return results[0]

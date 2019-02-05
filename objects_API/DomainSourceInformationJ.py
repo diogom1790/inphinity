@@ -1,8 +1,8 @@
 from marshmallow import Schema, fields, post_load
 
-from rest_client.DomainRest import DomainAPI
+from rest_client.DomainSourceInformationRest import DomainSourceInformationAPI
 
-class DomainSchema(Schema):
+class DomainSourceInformationSchema(Schema):
     """
     This class map the json into the object Domain
 
@@ -12,10 +12,10 @@ class DomainSchema(Schema):
     designation = fields.Str()
 
     @post_load
-    def make_Domain(self, data):
-        return DomainJson(**data)
+    def make_DomainSourceInformation(self, data):
+        return DomainSourceInformationJson(**data)
 
-class DomainJson(object):
+class DomainSourceInformationJson(object):
     """
     This class manage the object and is used to map them into json format
     """
@@ -24,8 +24,8 @@ class DomainJson(object):
         """
         Initialization of the class
 
-        :param id: name of the function
-        :param designation: name of the domain
+        :param id: id of the domain source information
+        :param designation: name of the domain source information
 
         :type id: int
         :type designation: string 
@@ -44,26 +44,26 @@ class DomainJson(object):
     def getAllAPI():
 
         """
-        get all the domain on the database
+        get all the domain source Information on the database
 
         :return: list of Domain
         :rtype: vector[DomainJ]
         """
-        list_domain = DomainAPI().get_all()
-        schema = DomainSchema()
-        results = schema.load(list_domain, many=True)
+        list_domain_source_information = DomainSourceInformationAPI().get_all()
+        schema = DomainSourceInformationSchema()
+        results = schema.load(list_domain_source_information, many=True)
         return results[0]
 
-    def setDomain(self):
+    def setDomainSourceInformation(self):
         """
         set new domain
 
         :return: new domain completed with the id
         :rtype: DomainJ
         """
-        schema = DomainSchema(only=['designation'])
-        json_domain = schema.dump(self)
-        resultsCreation = DomainAPI().setDomain(jsonData = json_domain.data)
+        schema = DomainSourceInformationSchema(only=['designation'])
+        json_domain_source_information = schema.dump(self)
+        resultsCreation = DomainSourceInformationAPI().setDomain(jsonData = json_domain_source_information.data)
         schema = DomainSchema()
         results = schema.load(resultsCreation)
         return results[0]

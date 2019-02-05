@@ -203,14 +203,14 @@ AuthenticationAPI().createAutenthicationToken()
 dir_path = os.path.dirname(os.path.realpath(__file__))
 print(dir_path)
 
-path = dir_path + '/NCBI/organisms/JRGG01.wd.fasta'
+path = dir_path + '/NCBI/organisms/NC_017563.wd.fasta'
 print(path)
 
-path_proteins = dir_path + '/NCBI/organisms/JRGG01.prot_aa.fasta'
-path_proteins_CDS = dir_path + '/NCBI/organisms/JRGG01.prot_csd.fasta'
+path_proteins = dir_path + '/NCBI/organisms/NC_017563.prot_aa.fasta'
+path_proteins_CDS = dir_path + '/NCBI/organisms/NC_017563.prot_csd.fasta'
 
-fasta_protein_aa_obj_dict = Fasta_protein_NCBI(path_proteins, 'protein_id')
-fasta_protein_CDS_obj_dict = Fasta_nucleotid_NCBI(path_proteins_CDS,  'protein_id')
+fasta_protein_aa_obj_dict = Fasta_protein_NCBI(path_proteins, 'locus_tag')
+fasta_protein_CDS_obj_dict = Fasta_nucleotid_NCBI(path_proteins_CDS,  'locus_tag')
 #fasta_protein_csd_id = fasta_protein_CDS_obj_dict.get_list_nucleotid_name()
 
 
@@ -224,9 +224,9 @@ wdGenomeObj = wholeGenomeFastaObj.get_whole_genome()
 person_responsible = 3
 source_data = 1
 
-id_strain = 16224
+id_strain = 15748
 
-id_bacterium = createBacterium('NZ_JRGG00000000.1', person_responsible, source_data, id_strain)
+id_bacterium = createBacterium('NC_017563', person_responsible, source_data, id_strain)
 createWholeGenome(wdGenomeObj, id_bacterium)
 
 

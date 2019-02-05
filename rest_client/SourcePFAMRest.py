@@ -2,15 +2,15 @@ import json
 from rest_client.GetRest import GetRest
 from rest_client.PostRest import PostRest
 
-class DomainAPI(object):
+class SourcePFAMAPI(object):
     """
-    This class manage the requests for the Domain objects into the restAPI
+    This class manage the requests for the SourcePfam objects into the restAPI
 
     :param function: the name of the function to access in the rest API
     :type function: string
     """
 
-    def __init__(self, function='domain/'):
+    def __init__(self, function='sourcepfam/'):
         """
         Initialization of the class
 
@@ -23,7 +23,7 @@ class DomainAPI(object):
 
     def get_all(self):
         """
-        get all the domains on the database
+        get all the source pfam on the database
 
         :return: json file with all the data
         :rtype: string (json format)
@@ -31,7 +31,7 @@ class DomainAPI(object):
         result_get = GetRest(function = self.function).performRequest()
         return result_get
 
-    def setDomain(self, jsonData):
+    def setSourcePFAM(self, jsonData):
         """
         set new domain in the database
 
