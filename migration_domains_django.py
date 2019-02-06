@@ -13,6 +13,7 @@ from objects_API.DomainJ import DomainJson
 
 from objects_3did.DDI_interaction_view import DDI_interaction_view
 
+from objects_Pfam.Pfam_interactions import Pfam_interaction
 
 #===============================================
 # Script used the domains into the new database
@@ -78,8 +79,25 @@ def get_pfam_interactions_3did():
 
     return data_couples
 
+def get_pfam_interactions_iPfam():
+    """
+    This method get all the ddi couples in iPfam DB
 
+    :return List[tuple(domain_a, domain_b)
+    :rtype List(tuple)
+
+    """
+    list_interactions = Pfam_interaction.get_all_pfam_interactions()
+
+    data_couples = [(ddi_couple.pfam_a, ddi_couple.pfam_b) for ddi_couple in list_interactions]
+
+    return data_couples
+
+
+list_tuples_iPfam = get_pfam_interactions_iPfam()
 list_tuple_interactions_3did = get_pfam_interactions_3did()
+
+
 
 dict_values = get_list_domains()
 

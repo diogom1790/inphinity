@@ -29,7 +29,7 @@ class _pfamA_interactions(object):
         :rtype string
         """
         conf_data_obj = Configuration_data('iPFAM')
-        db_name = conf_data_obj.get_database()
+        db_name = conf_data_obj.get_iPFAM_db()
         return db_name
 
 
