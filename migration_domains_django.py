@@ -106,6 +106,8 @@ def get_pfam_interactions_DOMINE():
     return list_interactions
 
 
+id_ddi_pair = DomainInteractionPairJson.verifyDDIpairExistence('PF02629','PF04545')
+
 list_interactions_DOMINE = get_pfam_interactions_DOMINE()
 list_tuples_iPfam = get_pfam_interactions_iPfam()
 list_tuple_interactions_3did = get_pfam_interactions_3did()
