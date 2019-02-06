@@ -29,7 +29,7 @@ class _Interactions_sql(object):
         :rtype string
         """
         conf_data_obj = Configuration_data('DOMINE')
-        db_name = conf_data_obj.get_database()
+        db_name = conf_data_obj.get_domine_db()
         return db_name
 
     def get_all_interactions(self):

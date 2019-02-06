@@ -12,8 +12,8 @@ from objects_API.DomainInteractionSourceJ import DomainInteractionSourceJson
 from objects_API.DomainJ import DomainJson
 
 from objects_3did.DDI_interaction_view import DDI_interaction_view
-
 from objects_Pfam.Pfam_interactions import Pfam_interaction
+from objects_DOMINE.INTERACTION import interaction_ddi
 
 #===============================================
 # Script used the domains into the new database
@@ -93,7 +93,20 @@ def get_pfam_interactions_iPfam():
 
     return data_couples
 
+def get_pfam_interactions_DOMINE():
+    """
+    This method get all the ddi couples in DOMINE DB
 
+    :return List of interactions objects
+    :rtype List(INTERACTION)
+
+    """
+    list_interactions = interaction_ddi.get_all_pfam_interactions()
+
+    return list_interactions
+
+
+list_interactions_DOMINE = get_pfam_interactions_DOMINE()
 list_tuples_iPfam = get_pfam_interactions_iPfam()
 list_tuple_interactions_3did = get_pfam_interactions_3did()
 
