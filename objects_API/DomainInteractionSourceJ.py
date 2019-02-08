@@ -71,6 +71,25 @@ class DomainInteractionSourceJson(object):
         results = schema.load(resultsCreation)
         return results[0]
 
+
+    def verifyDDIpairSourceExistence(id_ddi:int, id_source:int):
+        """
+        verify if the ddi pair source already exists in the database and return it's ID or -1 in case of inexistence
+
+        :param id_ddi: domain a
+        :param id_source: domain b
+
+        :type id_ddi: int
+        :type id_source: int
+
+        :return: id of the ddi source existence or -1
+        :rtype: int
+        """
+
+        results_DDI = DomainInteractionSourceAPI().getIdDDISource(id_ddi = id_ddi, id_source = id_source)
+        id_ddi = results_DDI['id_ddi_iteract_source']
+        return id_ddi
+
     def __str__(self):
         """
         override the Str function 

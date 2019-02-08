@@ -43,3 +43,23 @@ class DomainInteractionSourceAPI(object):
         jsonData = json.dumps(jsonData)
         result_post = PostRest(function = self.function, dataDict = jsonData).performRequest()
         return result_post
+
+    def getIdDDISource(self, id_ddi:int, id_source:int):
+        """
+        get teh id of a ddi source data if already exists in the database
+
+        :param id_ddi: ID of the DDI
+        :param id_source: ID of the Source
+
+        :type id_ddi: int
+        :type id_source: int
+
+        :return: json that contain the information about the existence and the id or -1
+        :rtype: string (json format)
+        """
+
+
+        self.function += 'ddi_info_source_existence/' + str(id_ddi) + '/' + str(id_source)
+
+        result_get = GetRest(function = self.function).performRequest()
+        return result_get
