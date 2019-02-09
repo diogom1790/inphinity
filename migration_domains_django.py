@@ -145,7 +145,7 @@ dict_values = get_list_domains()
 id_ddi_pair = DomainInteractionPairJson.verifyDDIpairExistence('PF02029','PF04545')
 
 list_tuples_iPfam = get_pfam_interactions_iPfam()
-insertIpfamDDI(list_tuples_iPfam, dict_values)
+#insertIpfamDDI(list_tuples_iPfam, dict_values)
 
 
 list_interactions_DOMINE = get_pfam_interactions_DOMINE()
