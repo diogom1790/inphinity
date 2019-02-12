@@ -83,7 +83,7 @@ def get_pfam_interactions_iPfam():
     """
     This method get all the ddi couples in iPfam DB
 
-    :return List[tuple(domain_a, domain_b)
+    :return List(tuple(domain_a, domain_b))
     :rtype List(tuple)
 
     """
@@ -104,6 +104,34 @@ def get_pfam_interactions_DOMINE():
     list_interactions = interaction_ddi.get_all_pfam_interactions()
 
     return list_interactions
+
+
+def get_ddi_by_DOMINE_technic_name(source_ddi, list_interactions_DOMINE):
+
+    """
+    get list of tuples given a sorouce data in DOMINE
+
+
+    :param source_ddi: name of the source in DOMINE database
+    :param list_interactions_DOMINE: list of INTERACTION objects
+
+    :type source_ddi: str - required   
+    :type list_interactions_DOMINE: List(INTERACTION) - required   
+
+    :return List(tuple(domain_a, domain_b))
+    :rtype List(tuple)
+    """
+
+    assert source_ddi in ['iPfam', 'did3', 'ME', 'RCDP', 'Pvalue', 'Fusion', 'DPEA',
+     'PE', 'GPE', 'DIPD', 'RDFF', 'KGIDDI', 'INSITE', 'DomainGA', 'PP',
+      'PredictionConfidence', 'SameGO']
+
+    list_tuples_interactions = []
+    for interactions_value in list_interactions_DOMINE:
+        value = getattr(interactions_value, source_ddi)
+        if value == 1:
+            list_tuples_interactions.append((interactions_value.domain_A, interactions_value.domain_B))
+    return list_tuples_interactions
 
 def insertNewDomain(domain_designation):
     domain_obj = DomainJson(designation = pfam_a)
@@ -148,9 +176,13 @@ list_tuples_iPfam = get_pfam_interactions_iPfam()
 #insertIpfamDDI(list_tuples_iPfam, dict_values)
 
 
-list_interactions_DOMINE = get_pfam_interactions_DOMINE()
 list_tuples_iPfam = get_pfam_interactions_iPfam()
 list_tuple_interactions_3did = get_pfam_interactions_3did()
+list_interactions_DOMINE = get_pfam_interactions_DOMINE()
+
+list_tuples_KGIDDI = get_ddi_by_DOMINE_technic_name('KGIDDI',list_interactions_DOMINE)
+list_tuples_ME = get_ddi_by_DOMINE_technic_name('ME',list_interactions_DOMINE)
+
 
 
 
