@@ -45,9 +45,7 @@ from objects_DOMINE.INTERACTION import interaction_ddi
 #print(list_interaction_pairs[0])
 
 
-conf_obj = ConfigurationAPI()
-conf_obj.load_data_from_ini()
-AuthenticationAPI().createAutenthicationToken()
+
 
 
 def get_list_domains():
@@ -121,7 +119,7 @@ def get_ddi_by_DOMINE_technic_name(source_ddi, list_interactions_DOMINE):
     :return List(tuple(domain_a, domain_b))
     :rtype List(tuple)
     """
-
+    print(source_ddi)
     assert source_ddi in ['iPfam', 'did3', 'ME', 'RCDP', 'Pvalue', 'Fusion', 'DPEA',
      'PE', 'GPE', 'DIPD', 'RDFF', 'KGIDDI', 'INSITE', 'DomainGA', 'PP',
       'PredictionConfidence', 'SameGO']
@@ -133,21 +131,31 @@ def get_ddi_by_DOMINE_technic_name(source_ddi, list_interactions_DOMINE):
             list_tuples_interactions.append((interactions_value.domain_A, interactions_value.domain_B))
     return list_tuples_interactions
 
+
+def getListSourceDomainsDict():
+    dict_sources = {}
+    list_domains_source = DomainSourceInformationJson.getAllAPI()
+
+    data_couples = {source_ddi.designation : source_ddi.id for source_ddi in list_domains_source}
+
+    return data_couples
+
+
 def insertNewDomain(domain_designation):
-    domain_obj = DomainJson(designation = pfam_a)
+    domain_obj = DomainJson(designation = domain_designation)
     domain_obj_json = domain_obj.setDomain()
     return domain_obj_json
 
 
-def insertDDIIpfam(pfam_a, pfam_b, dict_pfams, id_source_information):
+def insertDDISource(pfam_a, pfam_b, dict_pfams, id_source_information):
     date_day = datetime.datetime.now().date
     if pfam_a not in dict_pfams:
         domain_json = insertNewDomain(pfam_a)
-        dict_pfams[domain_obj_json.designation] = domain_obj_json.id
+        dict_pfams[domain_json.designation] = domain_json.id
 
     if pfam_b not in dict_pfams:
         domain_json = insertNewDomain(pfam_b)
-        dict_pfams[domain_obj_json.designation] = domain_obj_json.id
+        dict_pfams[domain_json.designation] = domain_json.id
 
     id_ddi_pair = DomainInteractionPairJson.verifyDDIpairExistence(pfam_a,pfam_b)
     if id_ddi_pair == -1:
@@ -166,22 +174,47 @@ def insertDDIIpfam(pfam_a, pfam_b, dict_pfams, id_source_information):
 
 def insertIpfamDDI(list_tuples, dict_elements):
     for dom_a, dom_b in list_tuples:
-       insertDDIIpfam(dom_a, dom_b, dict_elements, 1)
+       insertDDISource(dom_a, dom_b, dict_elements, 1)
+
+def insert3DidPfam(list_tuples, dict_elements):
+    for dom_a, dom_b in list_tuples:
+        insertDDISource(dom_a, dom_b, dict_elements, 2)
+
+def insertDomineDdi(list_tuples, dict_elements, information_source):
+    for dom_a, dom_b in list_tuples:
+        insertDDISource(dom_a, dom_b, dict_elements, information_source)
+
+
+conf_obj = ConfigurationAPI()
+conf_obj.load_data_from_ini()
+AuthenticationAPI().createAutenthicationToken()
+
+
+dict_sources_ddi = getListSourceDomainsDict()
 
 #Verify the DDI existence
 dict_values = get_list_domains()
-id_ddi_pair = DomainInteractionPairJson.verifyDDIpairExistence('PF02029','PF04545')
+id_ddi_pair = DomainInteractionPairJson.verifyDDIpairExistence('PF00001','PF00001')
 
+#Insert iPfam
 list_tuples_iPfam = get_pfam_interactions_iPfam()
-#insertIpfamDDI(list_tuples_iPfam, dict_values)
+insertIpfamDDI(list_tuples_iPfam, dict_values)
 
 
-list_tuples_iPfam = get_pfam_interactions_iPfam()
+#Insert 3 did
 list_tuple_interactions_3did = get_pfam_interactions_3did()
+insert3DidPfam(list_tuple_interactions_3did, dict_values)
+
+
 list_interactions_DOMINE = get_pfam_interactions_DOMINE()
 
-list_tuples_KGIDDI = get_ddi_by_DOMINE_technic_name('KGIDDI',list_interactions_DOMINE)
-list_tuples_ME = get_ddi_by_DOMINE_technic_name('ME',list_interactions_DOMINE)
+list_sources_ddi_sources = ['ME','RCDP','Pvalue','Fusion','DPEA','PE','GPE','DIPD','RDFF','KGIDDI','INSITE','DomainGA','PP','SameGO']
+
+#Insert DOMINE
+for source_name, id_source_domain in dict_sources_ddi.items():
+    list_tuples_by_source = get_ddi_by_DOMINE_technic_name(source_name,list_interactions_DOMINE)
+    print(len(list_tuples_by_source))
+    insertDomineDdi(list_tuples_by_source, dict_values, id_source_domain)
 
 
 
