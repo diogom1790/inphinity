@@ -120,10 +120,12 @@ def get_ddi_by_DOMINE_technic_name(source_ddi, list_interactions_DOMINE):
     :rtype List(tuple)
     """
     print(source_ddi)
-    assert source_ddi in ['iPfam', 'did3', 'ME', 'RCDP', 'Pvalue', 'Fusion', 'DPEA',
+    assert source_ddi in ['iPfam', '3did', 'ME', 'RCDP', 'Pvalue', 'Fusion', 'DPEA',
      'PE', 'GPE', 'DIPD', 'RDFF', 'KGIDDI', 'INSITE', 'DomainGA', 'PP',
       'PredictionConfidence', 'SameGO']
 
+    if source_ddi == '3did':
+        source_ddi = 'did3'
     list_tuples_interactions = []
     for interactions_value in list_interactions_DOMINE:
         value = getattr(interactions_value, source_ddi)
@@ -198,12 +200,12 @@ id_ddi_pair = DomainInteractionPairJson.verifyDDIpairExistence('PF00001','PF0000
 
 #Insert iPfam
 list_tuples_iPfam = get_pfam_interactions_iPfam()
-insertIpfamDDI(list_tuples_iPfam, dict_values)
+#insertIpfamDDI(list_tuples_iPfam, dict_values)
 
 
 #Insert 3 did
 list_tuple_interactions_3did = get_pfam_interactions_3did()
-insert3DidPfam(list_tuple_interactions_3did, dict_values)
+#insert3DidPfam(list_tuple_interactions_3did, dict_values)
 
 
 list_interactions_DOMINE = get_pfam_interactions_DOMINE()
