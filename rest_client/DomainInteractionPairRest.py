@@ -42,3 +42,25 @@ class DomainInteractionPairAPI(object):
         jsonData = json.dumps(jsonData)
         result_post = PostRest(function = self.function, dataDict = jsonData).performRequest()
         return result_post
+
+    def getIdDDI(self, pfam_a:str, pfam_b:str):
+        """
+        verify if a ddi already exists given the PFAM a and PFAM B (it verify the reverse)
+
+        :param pfam_a: PFAM domain A
+        :param pfam_b: PFAM domain A
+
+        :type pfam_a: string
+        :type pfam_b: string
+
+        :return: json file with the last domain created
+        :rtype: string (json format)
+        """
+
+        pfam_a = pfam_a.upper()
+        pfam_b = pfam_b.upper()
+
+        self.function += 'ddi_existence/' + str(pfam_a) + '/' + str(pfam_b)
+
+        result_get = GetRest(function = self.function).performRequest()
+        return result_get

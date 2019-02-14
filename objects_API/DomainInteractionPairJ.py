@@ -72,3 +72,21 @@ class DomainInteractionPairJson(object):
         schema = DomainInteractionPairSchema()
         results = schema.load(resultsCreation)
         return results[0]
+
+    def verifyDDIpairExistence(pfam_a:str, pfam_b:str):
+        """
+        verify if the ddi pair already exists in the database and return it's ID or -1 in case of inexistence
+
+        :param pfam_a: domain a
+        :param pfam_b: domain b
+
+        :type pfam_a: string
+        :type pfam_b: string
+
+        :return: id of the ddi or -1
+        :rtype: int
+        """
+
+        results_DDI = DomainInteractionPairAPI().getIdDDI(pfam_a = pfam_a, pfam_b = pfam_b)
+        id_ddi = results_DDI['id_ddi_interaction']
+        return id_ddi

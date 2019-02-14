@@ -33,7 +33,7 @@ class _DDI_interaction_view_sql(object):
         :rtype string
         """
         conf_data_obj = Configuration_data('3DID')
-        db_name = conf_data_obj.get_database()
+        db_name = conf_data_obj.get_3did_db()
         return db_name
 
     def get_all_pfam_interactions(self):
