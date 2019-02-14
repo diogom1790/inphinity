@@ -135,6 +135,13 @@ def get_ddi_by_DOMINE_technic_name(source_ddi, list_interactions_DOMINE):
 
 
 def getListSourceDomainsDict():
+    """
+    get list of domains sources
+
+
+    :return dictionary with all the sources and id
+    :rtype Dictionary{source_name: id}
+    """
     dict_sources = {}
     list_domains_source = DomainSourceInformationJson.getAllAPI()
 
@@ -144,12 +151,41 @@ def getListSourceDomainsDict():
 
 
 def insertNewDomain(domain_designation):
+    """
+    Insert a new domain into django db given it name
+
+
+    :param domain_designation: name of the domain
+
+    :type domain_designation: str - required   
+
+    :return domain object
+    :rtype DomainJson
+    """
     domain_obj = DomainJson(designation = domain_designation)
     domain_obj_json = domain_obj.setDomain()
     return domain_obj_json
 
 
 def insertDDISource(pfam_a, pfam_b, dict_pfams, id_source_information):
+    """
+    Insert a new DDI into django db.
+    1- get the id of both domains if they arn't in the dictionary
+    2- verify if the DDI already exists (and the reverse to [A-B - B-A])
+    3- if not, insert
+
+
+    :param pfam_a: name of the domain A
+    :param pfam_b: name of the domain B
+    :param dict_pfams: dictionary of the domains inserted
+    :param id_source_information: source of the information (3did, Ipfam,...)
+
+    :type pfam_a: str - required   
+    :type pfam_b: str - required  
+    :type dict_pfams: dictionary - required  
+    :type id_source_information: Int - required  
+
+    """
     date_day = datetime.datetime.now().date
     if pfam_a not in dict_pfams:
         domain_json = insertNewDomain(pfam_a)
@@ -175,14 +211,44 @@ def insertDDISource(pfam_a, pfam_b, dict_pfams, id_source_information):
         ddi_source_obj = ddi_source_obj.setDomainInteractionSource()
 
 def insertIpfamDDI(list_tuples, dict_elements):
+    """
+    Insert a new DDI extracted from IpFam
+
+    :param list_tuples: list with all the domains (list of tuples)
+    :param dict_elements: dict with all the domains inserted
+
+    :type list_tuples: list(tuple(str, str)) - required   
+    :type domain_designation: dictionary - required   
+
+    """
     for dom_a, dom_b in list_tuples:
        insertDDISource(dom_a, dom_b, dict_elements, 1)
 
 def insert3DidPfam(list_tuples, dict_elements):
+    """
+    Insert a new DDI extracted from 3Did
+
+    :param list_tuples: list with all the domains (list of tuples)
+    :param dict_elements: dict with all the domains inserted
+
+    :type list_tuples: list(tuple(str, str)) - required   
+    :type domain_designation: dictionary - required   
+
+    """
     for dom_a, dom_b in list_tuples:
         insertDDISource(dom_a, dom_b, dict_elements, 2)
 
 def insertDomineDdi(list_tuples, dict_elements, information_source):
+    """
+    Insert a new DDI extracted from DOMINE
+
+    :param list_tuples: list with all the domains (list of tuples)
+    :param dict_elements: dict with all the domains inserted
+
+    :type list_tuples: list(tuple(str, str)) - required   
+    :type domain_designation: dictionary - required   
+
+    """
     for dom_a, dom_b in list_tuples:
         insertDDISource(dom_a, dom_b, dict_elements, information_source)
 
@@ -219,10 +285,5 @@ for source_name, id_source_domain in dict_sources_ddi.items():
     insertDomineDdi(list_tuples_by_source, dict_values, id_source_domain)
 
 
-
-
-
-
-print(dict_values['PF02567'])
 
 
