@@ -87,7 +87,7 @@ class BacteriumJson(object):
 
         :type id_bacteriophage: int
 
-        :return: a json of the bacterim 
+        :return: a json of the bacterium 
         :rtype: BacteriumJson
         """
         bacterium = BacteriumAPI().get_by_id(id_bacterium)
@@ -110,4 +110,21 @@ class BacteriumJson(object):
         resultsCreation = BacteriumAPI().setBacteriumExistsByAcc(acc_value = acc_value)
         bacterium_existence = resultsCreation['value']['bacterium_exists']
         return bacterium_existence
+
+    def getByAccnumber(acc_number:str):
+
+        """
+        get a bacterium given its acc
+
+        :param acc_number: acc of the bacterium that it will be returned
+
+        :type acc_number: String
+
+        :return: a json of the bacterium
+        :rtype: BacteriumJson
+        """
+        bacterium = BacteriumAPI().getBacteriumByAcc(acc_number)
+        schema = BacteriumSchema()
+        results = schema.load(bacterium, many=False)
+        return results[0]
 
