@@ -46,11 +46,24 @@ def getBacteriumStrainSpecieDesignationById(id_bacterium):
 
     return taxonomy_bacterium
 
+
+def getBacteriophageDesignationNewDBById(id_new_phage):
+    bacteriophage_obj = BacteriophageJson.getByID(id_new_phage)
+    phage_designation = bacteriophage_obj.designation
+
+    return phage_designation
+
 path_file_name = 'data_ids_interaction_new_old_db.csv'
 
 dataframe_data = readCSVToDataFrame(path_file_name)
 
+
+conf_obj = ConfigurationAPI()
+conf_obj.load_data_from_ini()
+AuthenticationAPI().createAutenthicationToken()
+
 for index, row in dataframe_data.iterrows():
+    #Old couple treatment
     interaction_id = row['interaction_id_old_db']
     couple_obj = getCoupleFromInteractionIdOldDB(interaction_id)
     id_phage = couple_obj.fk_phage
@@ -58,5 +71,11 @@ for index, row in dataframe_data.iterrows():
 
     phage_designation = getPhageDesignationById(id_phage)
     bacterium_designation = getBacteriumStrainSpecieDesignationById(id_bacterium)
+
+    #New couple treatment
+    id_new_phage = row['id_phage']
+    id_new_bacterium = row['id_bact']
+
+    phage_designation_new = getBacteriophageDesignationNewDBById(id_new_phage)
     print(couple_obj)
 print(dataframe_data)
