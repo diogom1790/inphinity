@@ -1,4 +1,5 @@
 import pandas as pd
+import numpy as np
 from objects_API.BacteriumJ import BacteriumJson
 from objects_API.BacteriophageJ import BacteriophageJson
 
@@ -66,7 +67,7 @@ def get_dictionary_index_bacterium(dataframe_interactions):
     :rtype dict{[acc_value]:id}
     """
 
-    dataframe_data = dataframe_data.sort_values(by=['acc_bacterium'], ascending=[1])
+    dataframe_interactions = dataframe_interactions.sort_values(by=['acc_bacterium'], ascending=[1])
     old_acc = ''
     dict_ids_bact = {}
     for index, row in dataframe_data.iterrows():
@@ -92,10 +93,10 @@ def getIdsBacteriophagesByDataframe(dataframe_interactions):
     :return dictionary with the bacteriophage ids
     :rtype dict{[acc_value]:id}
     """
-    dataframe_data = dataframe_data.sort_values(by=['phage_name'], ascending=[1])
+    dataframe_interactions = dataframe_interactions.sort_values(by=['phage_name'], ascending=[1])
     old_design = ''
     dict_designation_id = {}
-    for index, row in dataframe_data.iterrows():
+    for index, row in dataframe_interactions.iterrows():
         bacteriophage_design = row["phage_name"]
         if bacteriophage_design != old_design:
             try:
@@ -106,6 +107,17 @@ def getIdsBacteriophagesByDataframe(dataframe_interactions):
                 dict_designation_id[bacteriophage_design] = -1
     return dict_designation_id
 
+
+def createIdFileInteractions(dict_bact, dict_phage, dataframe_data_interaction, path_file_name):
+    array_information = []
+    for index, row in dataframe_data_interaction.iterrows():
+        id_bacterium = dict_bact[row['acc_bacterium']]
+        id_phage = dict_phage[row['phage_name']]
+        array_information.append([row['acc_bacterium'], row['phage_name'], id_bacterium, id_phage])
+    datafram_data = pd.DataFrame(array_information, columns = ['acc_bact','design_phage', 'id_bact', 'id_phage'] )
+    datafram_data.to_csv(path_or_buf = path_file_name)
+    
+
 conf_obj = ConfigurationAPI()
 conf_obj.load_data_from_ini()
 AuthenticationAPI().createAutenthicationToken()
@@ -114,9 +126,12 @@ path_csv_file = 'data_interactions.csv'
 
 dataframe_data = get_data_interactions_by_csv(path_csv_file)
 
+
 dict_ids_bacteria = get_dictionary_index_bacterium(dataframe_data)
 dict_ids_bacteriophage = getIdsBacteriophagesByDataframe(dataframe_data)
 
+path_save_file = 'data_ids_interaction.csv'
+createIdFileInteractions(dict_ids_bacteria, dict_ids_bacteriophage, dataframe_data, path_save_file)
 
 
 
