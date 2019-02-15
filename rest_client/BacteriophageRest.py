@@ -76,3 +76,20 @@ class BacteriophageAPI(object):
 
         result_get = GetRest(function = self.function).performRequest()
         return result_get
+
+    def getBacteriophageByDesignation(self, designation):
+        """
+        Get a bacteriophage exists according a designation
+
+        :param designation: designation name of a bacteriophage
+
+        :type designation: string
+
+        :return: json file with all the data
+        :rtype: string (json format)
+        """
+
+        self.function += 'design/' + designation + '/'
+
+        result_get = GetRest(function = self.function).performRequest()
+        return result_get
