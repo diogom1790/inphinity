@@ -11,13 +11,13 @@ class CoupleSchema(Schema):
     """
 
     id = fields.Int()
-    interaction_type = fields.Int()
-    bacteriophage = fields.Int()
     bacterium = fields.Int()
+    bacteriophage = fields.Int()
+    interaction_type = fields.Int()
     level = fields.Int()
-    lysis = fields.Int()
-    person_responsible = fields.Int()
+    lysis = fields.Int(required=False, allow_none=True)
     source_data = fields.Int()
+    person_responsible = fields.Int()
     validity = fields.Int()
 
     @post_load
@@ -28,7 +28,7 @@ class CoupleJson(object):
     """
     This class manage the object and is used to map them into json format
     """
-    def __init__(self, id:int = None, interaction_type:int = None, bacteriophage_id:int = None, bacterium_id:int = None, level_id:int = None, lysis_id:int = None, person_responsible_id:int = None, source_data_id:int = None, validity_id:int = None):
+    def __init__(self, id:int = None, interaction_type:int = None, bacteriophage:int = None, bacterium:int = None, level:int = None, lysis:int = None, person_responsible:int = None, source_data:int = None, validity:int = None):
 
         """
         Initialization of the class
@@ -54,13 +54,13 @@ class CoupleJson(object):
         """
         self.id = id
         self.interaction_type = interaction_type
-        self.bacteriophage = bacteriophage_id 
-        self.bacterium = bacterium_id
-        self.level = level_id
-        self.lysis = lysis_id
-        self.person_responsible = person_responsible_id
-        self.source_data = source_data_id
-        self.validity = validity_id
+        self.bacteriophage = bacteriophage
+        self.bacterium = bacterium
+        self.level = level
+        self.lysis = lysis
+        self.person_responsible = person_responsible
+        self.source_data = source_data
+        self.validity = validity
 
 
     def setCouple(self):

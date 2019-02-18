@@ -74,12 +74,17 @@ def getBacteriumDesignationNewByID(id_new_bacterium:int):
 def addInteractionsNewDB(interaction_type:bool, bacterium_id:int, phage_id:int, level_id:int, lysis_id:int, persone_responsible:int, source_data_id:int, validity_id:bool):
 
 
-    couple_obj = CoupleJson(interaction_type = interaction_type, bacteriophage_id = phage_id, bacterium_id = bacterium_id, level_id = level_id, lysis_id = lysis_id, person_responsible_id = persone_responsible, source_data_id = source_data_id, validity_id = validity_id)
+    couple_obj = CoupleJson(interaction_type = interaction_type, bacteriophage = phage_id, bacterium = bacterium_id, level = level_id, lysis = lysis_id, person_responsible = persone_responsible, source_data = source_data_id, validity = validity_id)
 
 
     couple_obj_json = couple_obj.setCouple()
     return couple_obj_json
 
+
+def writeIdsInserted(id_interaction_old, id_interaction_new):
+    str_write = str(id_interaction_old) + ',' + str(id_interaction_new)
+    with open("ids_couples_inserted.txt", "a") as myfile:
+        myfile.write(str_write)
 
 path_file_name = 'data_ids_interaction_new_old_db.csv'
 
@@ -114,7 +119,29 @@ for index, row in dataframe_data.iterrows():
     lysis_inter_id = couple_obj.fk_lysis_inter
     validity_id = 4
     #Couple object insertion
-    couple_obj = addInteractionsNewDB(interaction_type = type_interaction, bacterium_id = id_new_bacterium, phage_id = id_new_phage, level_id = level_interact_id, lysis_id = lysis_inter_id, persone_responsible = person_resposible_id, source_data_id = source_data_id, validity_id = validity_id)
+    print('------------------------')
+    print('Interaction Informations')
+    print('Old phage: {0}'.format(phage_designation))
+    print('New phage: {0}'.format(phage_designation_new))
+    print('Old bacterium: {0}'.format(bacterium_designation))
+    print('New bacterium: {0}'.format(bacterium_designation_new))
 
-    print(couple_obj)
+    if phage_designation == phage_designation_new and bacterium_designation == bacterium_designation_new:
+        couple_obj = addInteractionsNewDB(interaction_type = type_interaction, bacterium_id = id_new_bacterium, phage_id = id_new_phage, level_id = level_interact_id, lysis_id = lysis_inter_id, persone_responsible = person_resposible_id, source_data_id = source_data_id, validity_id = validity_id)
+        print(couple_obj)
+        id_new_couple = couple_obj.id
+        id_old_obj = interaction_id
+        writeIdsInserted(id_old_obj, id_new_couple)
+    else:
+        input_value = input("Insert (1 = Yes; other = No) ")
+        if input_value == '1':
+            couple_obj = addInteractionsNewDB(interaction_type = type_interaction, bacterium_id = id_new_bacterium, phage_id = id_new_phage, level_id = level_interact_id, lysis_id = lysis_inter_id, persone_responsible = person_resposible_id, source_data_id = source_data_id, validity_id = validity_id)
+            print(couple_obj)
+            id_new_couple = couple_obj.id
+            id_old_obj = interaction_id
+            writeIdsInserted(id_old_obj, id_new_couple)
+
+
+
+    
 print(dataframe_data)
