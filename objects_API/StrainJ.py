@@ -77,6 +77,23 @@ class StrainJson(object):
         results = schema.load(resultsCreation)
         return results[0]
 
+    def getByID(id_strain:int):
+
+        """
+        get a strain given its id
+
+        :param id_strain: id of the strain that it will be returned
+
+        :type id_strain: int
+
+        :return: a json of the strain 
+        :rtype: StrainJson
+        """
+        strain = StrainAPI().get_by_id(id_strain)
+        schema = StrainSchema()
+        results = schema.load(strain, many=False)
+        return results[0]
+
     def verifyStrainExistanceDesignationFkSpecie(designation:str, fk_specie:int):
         """
         Verify if a strain already exists given its designation and fk_specie

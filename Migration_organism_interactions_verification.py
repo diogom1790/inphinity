@@ -2,6 +2,8 @@ import pandas as pd
 import numpy as np
 from objects_API.BacteriumJ import BacteriumJson
 from objects_API.BacteriophageJ import BacteriophageJson
+from objects_API.StrainJ import StrainJson
+from objects_API.SpecieJ import SpecieJson
 
 from objects_new.Couples_new import Couple
 from objects_new.Organisms_new import Organism
@@ -47,11 +49,29 @@ def getBacteriumStrainSpecieDesignationById(id_bacterium):
     return taxonomy_bacterium
 
 
-def getBacteriophageDesignationNewDBById(id_new_phage):
+def getBacteriophageDesignationNewDBById(id_new_phage:int):
     bacteriophage_obj = BacteriophageJson.getByID(id_new_phage)
     phage_designation = bacteriophage_obj.designation
 
     return phage_designation
+
+
+def getBacteriumDesignationNewByID(id_new_bacterium:int):
+    bacterium_obj = BacteriumJson.getByID(id_new_bacterium)
+    strain_id = bacterium_obj.strain
+    strain_obj = StrainJson.getByID(strain_id)
+    strain_designation = strain_obj.designation
+
+    specie_id = strain_obj.specie
+    specie_obj = SpecieJson.getByID(specie_id)
+    specie_designation = specie_obj.designation
+
+    taxonomy_bacterium = 'Specie: ' + specie_designation + ' Strain: ' + strain_designation
+
+    return taxonomy_bacterium
+
+
+
 
 path_file_name = 'data_ids_interaction_new_old_db.csv'
 
@@ -77,5 +97,6 @@ for index, row in dataframe_data.iterrows():
     id_new_bacterium = row['id_bact']
 
     phage_designation_new = getBacteriophageDesignationNewDBById(id_new_phage)
+    bacterium_designation_new = getBacteriumDesignationNewByID(id_new_bacterium)
     print(couple_obj)
 print(dataframe_data)
