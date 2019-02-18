@@ -4,6 +4,7 @@ from objects_API.BacteriumJ import BacteriumJson
 from objects_API.BacteriophageJ import BacteriophageJson
 from objects_API.StrainJ import StrainJson
 from objects_API.SpecieJ import SpecieJson
+from objects_API.CoupleJ import CoupleJson
 
 from objects_new.Couples_new import Couple
 from objects_new.Organisms_new import Organism
@@ -70,7 +71,14 @@ def getBacteriumDesignationNewByID(id_new_bacterium:int):
 
     return taxonomy_bacterium
 
+def addInteractionsNewDB(interaction_type:bool, bacterium_id:int, phage_id:int, level_id:int, lysis_id:int, persone_responsible:int, source_data_id:int, validity_id:bool):
 
+
+    couple_obj = CoupleJson(interaction_type = interaction_type, bacteriophage_id = phage_id, bacterium_id = bacterium_id, level_id = level_id, lysis_id = lysis_id, person_responsible_id = persone_responsible, source_data_id = source_data_id, validity_id = validity_id)
+
+
+    couple_obj_json = couple_obj.setCouple()
+    return couple_obj_json
 
 
 path_file_name = 'data_ids_interaction_new_old_db.csv'
@@ -98,5 +106,15 @@ for index, row in dataframe_data.iterrows():
 
     phage_designation_new = getBacteriophageDesignationNewDBById(id_new_phage)
     bacterium_designation_new = getBacteriumDesignationNewByID(id_new_bacterium)
+
+    type_interaction = couple_obj.interact_pn
+    source_data_id = couple_obj.fk_source_data
+    person_resposible_id = 3 #Xavier
+    level_interact_id = couple_obj.fk_level_interact
+    lysis_inter_id = couple_obj.fk_lysis_inter
+    validity_id = 4
+    #Couple object insertion
+    couple_obj = addInteractionsNewDB(interaction_type = type_interaction, bacterium_id = id_new_bacterium, phage_id = id_new_phage, level_id = level_interact_id, lysis_id = lysis_inter_id, persone_responsible = person_resposible_id, source_data_id = source_data_id, validity_id = validity_id)
+
     print(couple_obj)
 print(dataframe_data)

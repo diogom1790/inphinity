@@ -12,13 +12,13 @@ class CoupleSchema(Schema):
 
     id = fields.Int()
     interaction_type = fields.Int()
-    bacteriophage_id = fields.Int()
-    bacterium_id = fields.Int()
-    level_id = fields.Int()
-    lysis_id = fields.Int()
-    person_responsible_id = fields.Int()
-    source_data_id = fields.Int()
-    validity_id = fields.Int()
+    bacteriophage = fields.Int()
+    bacterium = fields.Int()
+    level = fields.Int()
+    lysis = fields.Int()
+    person_responsible = fields.Int()
+    source_data = fields.Int()
+    validity = fields.Int()
 
     @post_load
     def make_Couple(self, data):
@@ -54,10 +54,19 @@ class CoupleJson(object):
         """
         self.id = id
         self.interaction_type = interaction_type
-        self.bacteriophage_id = bacteriophage_id 
-        self.bacterium_id = bactbacterium_id
-        self.level_id = level_id
-        self.lysis_id = lysis_id
-        self.person_responsible_id = person_responsible_id
-        self.source_data_id = source_data_id
-        self.validity_id = validity_id
+        self.bacteriophage = bacteriophage_id 
+        self.bacterium = bacterium_id
+        self.level = level_id
+        self.lysis = lysis_id
+        self.person_responsible = person_responsible_id
+        self.source_data = source_data_id
+        self.validity = validity_id
+
+
+    def setCouple(self):
+        schema = CoupleSchema(only=['interaction_type','bacteriophage','bacterium','level','person_responsible','source_data','validity'])
+        jsonCouple = schema.dump(self)
+        resultsCouple = CoupleAPI().set_couple(jsonData = jsonCouple.data)
+        schema = CoupleSchema()
+        results = schema.load(resultsCouple)
+        return results[0]
