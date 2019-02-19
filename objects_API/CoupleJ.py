@@ -70,3 +70,11 @@ class CoupleJson(object):
         schema = CoupleSchema()
         results = schema.load(resultsCouple)
         return results[0]
+
+    def setCoupleWithLysis(self):
+        schema = CoupleSchema(only=['interaction_type','bacteriophage','bacterium','level','person_responsible','source_data','validity','lysis'])
+        jsonCouple = schema.dump(self)
+        resultsCouple = CoupleAPI().set_couple(jsonData = jsonCouple.data)
+        schema = CoupleSchema()
+        results = schema.load(resultsCouple)
+        return results[0]
