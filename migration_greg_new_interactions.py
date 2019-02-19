@@ -64,9 +64,18 @@ def getBacteriumStrainSpecieDesignationById(id_bacterium):
     return taxonomy_bacterium
 
 
-def validateDataRow(list_phages_names:list, bacterium_name:str, row_dataframe):
+def validateDataRow(list_phages_names:list, bacterium_id:int, dict_phages_id:dict, row_dataframe):
+    couple_interaction_type = True
     for phage_name in list_phages_names:
+        phage_id = dict_phages_id[str(phage_name)]
         interaction_type = row_dataframe[phage_name]
+        print(type(interaction_type))
+        if isinstance(interaction_type, int):
+            couple_interaction_type = False
+            print(couple_interaction_type)
+        print(phage_id)
+    print('Hello')
+
 
 conf_obj = ConfigurationAPI()
 conf_obj.load_data_from_ini()
@@ -94,6 +103,7 @@ dict_phages_id['Sb-1'] = 4457
 
 
 list_heads = list(dataframe_file_interaction.head(0))
+list_heads_phages = list_heads[1:]
 
 for index, row in dataframe_file_interaction.iterrows():
     bacterium_name = row['bac/phage']
@@ -101,6 +111,6 @@ for index, row in dataframe_file_interaction.iterrows():
     taxonomy_bacterium = getBacteriumStrainSpecieDesignationById(id_bacterium)
 
     #ask the user if we can insert the data
-    
+    validateDataRow(list_heads_phages, id_bacterium, dict_phages_id, row)
     print(bacterium_name)
     #getIdOrganismContainName(dataframe_file_bacterium_list, bacterium_name)
