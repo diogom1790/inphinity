@@ -65,6 +65,12 @@ def getBacteriumStrainSpecieDesignationById(id_bacterium):
 
     return taxonomy_bacterium
 
+def RepresentsInt(s):
+    try: 
+        int(s)
+        return True
+    except ValueError:
+        return False
 
 def validateDataRow(list_phages_names:list, bacterium_id:int, dict_phages_id:dict, dict_types_interactions_id:dict, row_dataframe):
     couple_interaction_type = True
@@ -73,8 +79,9 @@ def validateDataRow(list_phages_names:list, bacterium_id:int, dict_phages_id:dic
         phage_id = dict_phages_id[str(phage_name)]
         interaction_type = row_dataframe[phage_name]
         print(type(interaction_type))
-        if is_int(interaction_type):
+        if RepresentsInt(interaction_type):
             couple_interaction_type = False
+            type_lysis = None
             print(couple_interaction_type)
         elif interaction_type in dict_types_interactions_id:
             type_lysis = dict_types_interactions_id[interaction_type]
