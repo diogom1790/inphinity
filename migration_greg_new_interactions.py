@@ -84,6 +84,7 @@ def validateDataRow(list_phages_names:list, bacterium_id:int, dict_phages_id:dic
             type_lysis = None
             print(couple_interaction_type)
         elif interaction_type in dict_types_interactions_id:
+            couple_interaction_type = True
             type_lysis = dict_types_interactions_id[interaction_type]
 
         addInteractionsNewDB(couple_interaction_type, bacterium_id, phage_id, 4, type_lysis, persone_responsible = 5, source_data_id = 3, validity_id = 1)
@@ -97,7 +98,7 @@ conf_obj.load_data_from_ini()
 AuthenticationAPI().createAutenthicationToken()
 
 
-path_excel_file_interaction = 'greg_S_aureus.xlsx'
+path_excel_file_interaction = 'greg_S_aureus_rest.xlsx'
 path_excel_file_bacterium_list = 'bacteria_greg.csv'
 file_bacterium_ids = 'correct_ids.csv'
 
