@@ -117,13 +117,13 @@ conf_obj.load_data_from_ini()
 AuthenticationAPI().createAutenthicationToken()
 
 
-path_excel_file_interaction = 'data_csv_import_greg/p_aeruginosa_interaction.xlsx'
+path_excel_file_interaction = 'data_csv_import_greg/e_coli_interaction_rest.xlsx'
 path_excel_file_bacterium_list = 'bacteria_greg.csv'
 
-file_bacterium_ids = 'data_csv_import_greg/p_areuginosa_ids.csv'
+file_bacterium_ids = 'data_csv_import_greg/e_coli_ids.csv'
 dict_ids_bacterium = getDictionaryFromCSV(file_bacterium_ids)
 
-file_phages_ids = 'data_csv_import_greg/p_areuginosa_ids_phage.csv'
+file_phages_ids = 'data_csv_import_greg/e_coli_ids_phage.csv'
 dict_ids_bacteriophage = getDictionaryFromCSV(file_phages_ids)
 
 
@@ -147,6 +147,9 @@ list_heads_phages = list_heads[1:]
 
 for index, row in dataframe_file_interaction.iterrows():
     bacterium_name = row['bac/phage']
+
+    bacterium_name = str(bacterium_name)
+
     id_bacterium = dict_ids_bacterium[bacterium_name]
     id_bacterium = int(id_bacterium)
     taxonomy_bacterium = getBacteriumDesignationNewByID(id_bacterium)
