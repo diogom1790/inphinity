@@ -11,14 +11,14 @@ class CoupleSchema(Schema):
     """
 
     id = fields.Int()
+    bacterium = fields.Int()
+    bacteriophage = fields.Int()
     interaction_type = fields.Int()
-    bacteriophage_id = fields.Int()
-    bacterium_id = fields.Int()
-    level_id = fields.Int()
-    lysis_id = fields.Int()
-    person_responsible_id = fields.Int()
-    source_data_id = fields.Int()
-    validity_id = fields.Int()
+    level = fields.Int()
+    lysis = fields.Int(required=False, allow_none=True)
+    source_data = fields.Int()
+    person_responsible = fields.Int()
+    validity = fields.Int()
 
     @post_load
     def make_Couple(self, data):
@@ -28,7 +28,7 @@ class CoupleJson(object):
     """
     This class manage the object and is used to map them into json format
     """
-    def __init__(self, id:int = None, interaction_type:int = None, bacteriophage_id:int = None, bacterium_id:int = None, level_id:int = None, lysis_id:int = None, person_responsible_id:int = None, source_data_id:int = None, validity_id:int = None):
+    def __init__(self, id:int = None, interaction_type:int = None, bacteriophage:int = None, bacterium:int = None, level:int = None, lysis:int = None, person_responsible:int = None, source_data:int = None, validity:int = None):
 
         """
         Initialization of the class
@@ -54,10 +54,27 @@ class CoupleJson(object):
         """
         self.id = id
         self.interaction_type = interaction_type
-        self.bacteriophage_id = bacteriophage_id 
-        self.bacterium_id = bactbacterium_id
-        self.level_id = level_id
-        self.lysis_id = lysis_id
-        self.person_responsible_id = person_responsible_id
-        self.source_data_id = source_data_id
-        self.validity_id = validity_id
+        self.bacteriophage = bacteriophage
+        self.bacterium = bacterium
+        self.level = level
+        self.lysis = lysis
+        self.person_responsible = person_responsible
+        self.source_data = source_data
+        self.validity = validity
+
+
+    def setCouple(self):
+        schema = CoupleSchema(only=['interaction_type','bacteriophage','bacterium','level','person_responsible','source_data','validity'])
+        jsonCouple = schema.dump(self)
+        resultsCouple = CoupleAPI().set_couple(jsonData = jsonCouple.data)
+        schema = CoupleSchema()
+        results = schema.load(resultsCouple)
+        return results[0]
+
+    def setCoupleWithLysis(self):
+        schema = CoupleSchema(only=['interaction_type','bacteriophage','bacterium','level','person_responsible','source_data','validity','lysis'])
+        jsonCouple = schema.dump(self)
+        resultsCouple = CoupleAPI().set_couple(jsonData = jsonCouple.data)
+        schema = CoupleSchema()
+        results = schema.load(resultsCouple)
+        return results[0]

@@ -110,3 +110,20 @@ class BacteriophageJson(object):
         resultsCreation = BacteriophageAPI().setBacteriumExistsByAcc(acc_value = acc_value)
         bacteriophage_existence = resultsCreation['value']['bacteriophage_exists']
         return bacteriophage_existence
+
+    def getBydesignation(designation:str):
+
+        """
+        get a bacteriophage given its designation
+
+        :param designation: designation of the bacteriophage that it will be returned
+
+        :type designation: String
+
+        :return: a json of the bacteriophage
+        :rtype: BacteriophageJson
+        """
+        bacteriophage = BacteriophageAPI().getBacteriophageByDesignation(designation)
+        schema = BacteriophageSchema()
+        results = schema.load(bacteriophage, many=False)
+        return results[0]

@@ -43,3 +43,20 @@ class SpecieAPI(object):
         jsonData = json.dumps(jsonData)
         result_post = PostRest(function = self.function, dataDict = jsonData).performRequest()
         return result_post
+
+    def get_by_id(self, id_specie:int):
+        """
+        get a specie given it id
+
+        :param id_specie: id of the specie
+
+        :type id_specie: int
+
+        :return: json file with all the data
+        :rtype: string (json format)
+        """
+
+        self.function += str(id_specie) + '/'
+
+        result_get = GetRest(function = self.function).performRequest()
+        return result_get

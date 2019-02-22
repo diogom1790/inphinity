@@ -75,3 +75,20 @@ class BacteriumAPI(object):
 
         result_get = GetRest(function = self.function).performRequest()
         return result_get
+
+    def getBacteriumByAcc(self, acc_value):
+        """
+        return a bacterium according to its acc
+
+        :param acc_value: accession number of the bacterium that you want to return
+
+        :type acc_value: string
+
+        :return: json file with all the data
+        :rtype: string (json format)
+        """
+
+        self.function += 'accnumber/' + acc_value + '/'
+
+        result_get = GetRest(function = self.function).performRequest()
+        return result_get

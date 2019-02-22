@@ -78,3 +78,21 @@ class SpecieJson(object):
         return results[0]
 
 
+    def getByID(id_specie:int):
+
+        """
+        get a specie given its id
+
+        :param id_specie: id of the specie that it will be returned
+
+        :type id_specie: int
+
+        :return: a json of the specie 
+        :rtype: SpecieJson
+        """
+        specie = SpecieAPI().get_by_id(id_specie)
+        schema = SpecieSchema()
+        results = schema.load(specie, many=False)
+        return results[0]
+
+
