@@ -117,6 +117,7 @@ class ProteinJson(object):
         :rtype: ProteinJson
         """
 
-        resultsCreation = ProteinAPI().getByOrganismID(organism_id = organism_id)
-        protein_existence = resultsCreation
-        return protein_existence
+        results_proteins_list_json = ProteinAPI().getByOrganismID(organism_id = organism_id)
+        schema = ProteinSchema()
+        results = schema.load(results_proteins_list_json, many = True)
+        return results[0]

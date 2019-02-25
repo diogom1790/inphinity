@@ -84,3 +84,20 @@ class ContigJson(object):
         schema = ContigSchema()
         results = schema.load(resultsCreation)
         return results[0]
+
+    def getByOrganismID(organism_id:int):
+        """
+        get all contigs of a given organism
+
+        :param organism_id: organism ID
+
+        :type organism_id: int
+
+        :return: all the contigs of the given organism id
+        :rtype: list[ContigJson]
+        """
+
+        resultsCreation = ContigAPI().getByOrganismID(organism_id = organism_id)
+        schema = ContigSchema()
+        results = schema.load(resultsCreation, many=True)
+        return results[0]

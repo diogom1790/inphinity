@@ -81,3 +81,20 @@ class WholeDNAJson(object):
         schema = WholeDNASchema()
         results = schema.load(resultsCreation)
         return results[0]
+
+    def getByOrganismID(organism_id:int):
+        """
+        get the whole_dna of a given organism
+
+        :param organism_id: organism ID
+
+        :type organism_id: int
+
+        :return: the whole_dna of the given organism id
+        :rtype: WholeDna
+        """
+
+        resultsJson = WholeDNAAPI().getByOrganismID(organism_id = organism_id)
+        schema = WholeDNASchema()
+        results = schema.load(resultsJson, many=False)
+        return results[0]
