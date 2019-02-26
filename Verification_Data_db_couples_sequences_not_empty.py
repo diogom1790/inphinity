@@ -102,3 +102,4 @@ list_contigs = getContigsByOrganismId(bacterium_id)
 
 
 print('Hello')
+print('Hello')
