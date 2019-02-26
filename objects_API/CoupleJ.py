@@ -62,6 +62,19 @@ class CoupleJson(object):
         self.source_data = source_data
         self.validity = validity
 
+    def getAllAPI():
+
+        """
+        get all the Couples on the database
+
+        :return: list of couple
+        :rtype: vector[CoupleJson]
+        """
+        list_couple = CoupleAPI().get_all()
+        schema = CoupleSchema()
+        results = schema.load(list_couple, many=True)
+        return results[0]
+
 
     def setCouple(self):
         schema = CoupleSchema(only=['interaction_type','bacteriophage','bacterium','level','person_responsible','source_data','validity'])

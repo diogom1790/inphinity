@@ -13,7 +13,6 @@ from objects_new.Organisms_new import Organism
 from objects_new.Strains_new import Strain
 from objects_new.Species_new import Specie
 
-from objects_new.Couples_new import Couple
 from configuration.configuration_api import ConfigurationAPI
 from rest_client.AuthenticationRest import AuthenticationAPI
 

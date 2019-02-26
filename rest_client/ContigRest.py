@@ -41,3 +41,20 @@ class ContigAPI(object):
         jsonData = json.dumps(jsonData)
         result_post = PostRest(function = self.function, dataDict = jsonData).performRequest()
         return result_post
+
+    def getByOrganismID(self, organism_id):
+        """
+        get all contigs of a given organism
+
+        :param organism_id: organism ID
+
+        :type organism_id: int
+
+        :return: all the contigs of the given organism id
+        :rtype: ProteinJson
+        """
+
+        self.function += 'organism_id/' + str(organism_id)
+
+        result_get = GetRest(function = self.function).performRequest()
+        return result_get
